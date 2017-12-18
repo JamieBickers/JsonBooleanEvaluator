@@ -1,9 +1,3 @@
-﻿  stdafx.cpp
-  JsonBooleanEvaluator.cpp
-  EvaluateArithmeticExpressions.cpp
-c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\evaluatearithmeticexpressions.cpp(147): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\evaluatearithmeticexpressions.cpp(158): warning C4715: 'getNextToken': not all control paths return a value
-c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\evaluatearithmeticexpressions.cpp(131): warning C4715: 'getNextArithmeticTerm': not all control paths return a value
-c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\evaluatearithmeticexpressions.cpp(117): warning C4715: 'evaluateArithmeticExpressionWithPreComputedFirstTerm': not all control paths return a value
+﻿  BooleanTree.cpp
+c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\booleantree.cpp(27): warning C4715: 'BooleanTree::evaluateCondition': not all control paths return a value
   JsonBooleanEvaluator.vcxproj -> C:\Users\Jamie\Desktop\JsonBooleanEvaluator\Debug\JsonBooleanEvaluator.exe

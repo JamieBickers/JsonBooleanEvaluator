@@ -2,4 +2,4 @@
 #include <string>
 
 double evaluateArithmeticExpression(std::string expression);
-void runTests();
+void runArithmeticEvaluationTests();

@@ -4,17 +4,10 @@
 #include <vector>
 #include <algorithm>
 
-using std::string;
-using std::cout;
-using std::endl;
-using std::cin;
-using std::boolalpha;
-using std::vector;
-using std::stod;
-using std::to_string;
+using namespace std;
 
 double evaluateArithmeticExpression(string expression);
-void runTests();
+void runArithmeticEvaluationTests();
 double handleBrackets(std::string &expression);
 double handleDivision(string expression);
 double handleMultiplication(string expression);
@@ -247,12 +240,9 @@ int indexOfFirstChar(string expression, char character, int position)
 	throw "Character is not in string.";
 }
 
-void runTests()
+void runArithmeticEvaluationTests()
 {
-	// tests below
-
-	// print formatted booleans
-	cout << boolalpha;
+	cout << "Arithmetic evaluation tests." << endl;
 
 	// getNextToken1
 	string exp1 = "-3242+2-233*(343-6)/3";
