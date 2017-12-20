@@ -24,6 +24,9 @@ bool BooleanTree::evaluateCondition()
 	else if (condition == "false") {
 		return false;
 	}
+	else {
+		return evaluateArithmeticExpression(condition);
+	}
 }
 
 bool BooleanTree::evaluateChildrenWithOperator()
@@ -37,8 +40,8 @@ bool BooleanTree::evaluateChildrenWithOperator()
 		}
 	}
 
-	bool left = (*leftChild).evaluateNode();
-	bool right = (*rightChild).evaluateNode();
+	bool left = leftChild->evaluateNode();
+	bool right = rightChild->evaluateNode();
 
 	if (booleanOperator == '&') {
 		return left && right;
@@ -57,10 +60,10 @@ bool BooleanTree::evaluateNotOperator()
 		throw "Invalid operation.";
 	}
 	else if (leftChild == NULL) {
-		return !(*rightChild).evaluateNode();
+		return !rightChild->evaluateNode();
 	}
 	else if (rightChild == NULL) {
-		return !(*leftChild).evaluateNode();
+		return !leftChild->evaluateNode();
 	}
 	else {
 		throw "cannot use not if both children are not null.";
@@ -72,10 +75,10 @@ bool BooleanTree::evaluateEmptyOperator() {
 		throw "Invalid operation.";
 	}
 	else if (leftChild == NULL) {
-		return (*rightChild).evaluateNode();
+		return rightChild->evaluateNode();
 	}
 	else if (rightChild == NULL) {
-		return (*leftChild).evaluateNode();
+		return leftChild->evaluateNode();
 	}
 	else {
 		throw "cannot use empty operator if both children are not null.";
@@ -86,100 +89,83 @@ void runBooleanTreeTests()
 {
 	cout << "Running BooleanTree tests." << endl;
 
-	BooleanTree initialNode = BooleanTree();
-	initialNode.condition = "true";
-	bool result = initialNode.evaluateNode();
+	auto initialNode = unique_ptr<BooleanTree>(new BooleanTree());
+	initialNode->condition = "true";
+	bool result = initialNode->evaluateNode();
 	cout << (result == true) << endl;
 
-	initialNode = BooleanTree();
-	initialNode.condition = "false";
-	result = initialNode.evaluateNode();
+	auto newInitialNode = BooleanTree();
+	newInitialNode.condition = "false";
+	result = newInitialNode.evaluateNode();
 	cout << (result == false) << endl;
 
 	// long test
-	initialNode = BooleanTree();
-	BooleanTree node1 = BooleanTree();
-	BooleanTree node2 = BooleanTree();
-	BooleanTree node3 = BooleanTree();
-	BooleanTree node4 = BooleanTree();
-	BooleanTree node5 = BooleanTree();
-	BooleanTree node6 = BooleanTree();
-	BooleanTree node7 = BooleanTree();
-	BooleanTree node8 = BooleanTree();
-	BooleanTree node9 = BooleanTree();
-	BooleanTree node10 = BooleanTree();
-	BooleanTree node11 = BooleanTree();
-	BooleanTree node12 = BooleanTree();
+	newInitialNode = BooleanTree();
+	newInitialNode.leftChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.rightChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.leftChild->leftChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.leftChild->rightChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.leftChild->rightChild->leftChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.leftChild->rightChild->rightChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.rightChild->rightChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.rightChild->rightChild->leftChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.rightChild->rightChild->leftChild->leftChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.rightChild->rightChild->leftChild->rightChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.rightChild->rightChild->rightChild = make_unique<BooleanTree>(BooleanTree());
+	newInitialNode.rightChild->rightChild->rightChild->leftChild = make_unique<BooleanTree>(BooleanTree());
 
-	node3.condition = "true";
-	node6.condition = "true";
-	node7.condition = "false";
-	node10.condition = "true";
-	node11.condition = "false";
-	node12.condition = "true";
+	newInitialNode.booleanOperator = '&';
+	newInitialNode.leftChild->booleanOperator = '|';
+	newInitialNode.rightChild->booleanOperator = '!';
+	newInitialNode.leftChild->leftChild->condition = "true";
+	newInitialNode.leftChild->rightChild->booleanOperator = '|';
+	newInitialNode.leftChild->rightChild->leftChild->condition = "true";
+	newInitialNode.leftChild->rightChild->rightChild->condition = "false";
+	newInitialNode.rightChild->rightChild->booleanOperator = '&';
+	newInitialNode.rightChild->rightChild->leftChild->booleanOperator = '|';
+	newInitialNode.rightChild->rightChild->leftChild->leftChild->condition = "true";
+	newInitialNode.rightChild->rightChild->leftChild->rightChild->condition = "false";
+	newInitialNode.rightChild->rightChild->rightChild->booleanOperator = NULL;
+	newInitialNode.rightChild->rightChild->rightChild->leftChild->condition = "true";
 
-	initialNode.booleanOperator = '&';
-	node1.booleanOperator = '|';
-	node4.booleanOperator = '|';
-	node5.booleanOperator = '&';
-	node8.booleanOperator = '|';
-
-	node2.booleanOperator = '!';
-	node9.booleanOperator = NULL;
-
-	initialNode.leftChild = &node1;
-	initialNode.rightChild = &node2;
-
-	node1.leftChild = &node3;
-	node1.rightChild = &node4;
-	node4.leftChild = &node6;
-	node4.rightChild = &node7;
-	node2.rightChild = &node5;
-	node5.leftChild = &node8;
-	node5.rightChild = &node9;
-	node8.leftChild = &node10;
-	node8.rightChild = &node11;
-	node9.leftChild = &node12;
-
-	result = initialNode.evaluateNode();
+	result = newInitialNode.evaluateNode();
 	cout << (result == false) << endl;
 
-	result = node1.evaluateNode();
+	result = newInitialNode.leftChild->evaluateNode();
 	cout << (result == true) << endl;
 
-	result = node2.evaluateNode();
+	result = newInitialNode.rightChild->evaluateNode();
 	cout << (result == false) << endl;
 
-	result = node3.evaluateNode();
+	result = newInitialNode.leftChild->leftChild->evaluateNode();
 	cout << (result == true) << endl;
 
-	result = node4.evaluateNode();
+	result = newInitialNode.leftChild->rightChild->evaluateNode();
 	cout << (result == true) << endl;
 
-	result = node5.evaluateNode();
+	result = newInitialNode.rightChild->rightChild->evaluateNode();
 	cout << (result == true) << endl;
 
-	result = node6.evaluateNode();
+	result = newInitialNode.leftChild->rightChild->leftChild->evaluateNode();
 	cout << (result == true) << endl;
 
-	result = node7.evaluateNode();
+	result = newInitialNode.leftChild->rightChild->rightChild->evaluateNode();
 	cout << (result == false) << endl;
 
-	result = node8.evaluateNode();
+	result = newInitialNode.rightChild->rightChild->leftChild->evaluateNode();
 	cout << (result == true) << endl;
 
-	result = node9.evaluateNode();
+	result = newInitialNode.rightChild->rightChild->rightChild->evaluateNode();
 	cout << (result == true) << endl;
 
-	result = node10.evaluateNode();
+	result = newInitialNode.rightChild->rightChild->leftChild->leftChild->evaluateNode();
 	cout << (result == true) << endl;
 
-	result = node11.evaluateNode();
+	result = newInitialNode.rightChild->rightChild->leftChild->rightChild->evaluateNode();
 	cout << (result == false) << endl;
 
-	result = node12.evaluateNode();
+	result = newInitialNode.rightChild->rightChild->rightChild->leftChild->evaluateNode();
 	cout << (result == true) << endl;
 
-	string end;
-	cin >> end;
+	initialNode.reset();
 }

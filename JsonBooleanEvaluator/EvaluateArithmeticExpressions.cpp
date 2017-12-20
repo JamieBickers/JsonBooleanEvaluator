@@ -389,10 +389,6 @@ void runArithmeticEvaluationTests()
 	exp = "-435 + 5*(435-564+324)/324 + 3454/3 - (324 - 345 * (3454 + (43*7))) - 9";
 	result = evaluateArithmeticExpression(exp);
 	cout << ((-435 + 5 * (435 - 564 + 324) / 324 + 3454 / 3 - (324 - 345 * (3454 + (43 * 7))) - 9 - result) < 0.001) << endl;
-
-	// pause before ending
-	string end;
-	cin >> end;
 }
 
 //string getNextVariable(string expression, int startingPosition)
