@@ -11,9 +11,9 @@ public:
 	std::unique_ptr<BooleanTree> rightChild;
 
 	bool evaluateNode();
+	bool evaluateNodeUsingStack();
 
 private:
-	bool evaluateCondition();
 	bool evaluateChildrenWithOperator();
 	bool evaluateNotOperator();
 	bool evaluateEmptyOperator();
