@@ -65,8 +65,14 @@ string getNextBooleanExpression(string expression, int position)
 		int currentPosition = position;
 		while (currentPosition < expression.size())
 		{
-			if (stringContainsCharacter2("&|!", expression[currentPosition])) {
+			if (stringContainsCharacter2("&|", expression[currentPosition])) {
 				break;
+			}
+			// do ! seperately as != is an arithmetic condition
+			else if (stringContainsCharacter2("!", expression[currentPosition])) {
+				if (!((currentPosition < expression.size() - 1) && (expression[currentPosition + 1] == '!'))) {
+					break;
+				}
 			}
 			currentPosition++;
 		}

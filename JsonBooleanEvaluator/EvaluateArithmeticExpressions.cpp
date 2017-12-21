@@ -24,6 +24,40 @@ int terminalIndexOfNextToken(string expression, int position);
 int initialIndexOfPreviousToken(string expression, int position);
 int indexOfNextOrPreviousToken(string expression, int position, int rightOrLeft);
 double handleMultiplicationOrDivision(string expression, double(*operation)(double a, double b), char operationCharacter);
+string getFullOperator(string expression, int startingPosition);
+
+bool evaluateArithmeticCondition(string condition)
+{
+	// remove whitespace
+	condition.erase(std::remove(condition.begin(), condition.end(), ' '), condition.end());
+
+	auto indexOfComparisionOperator = condition.find_first_of("<>!=", 0);
+	auto comparisonOperator = getFullOperator(condition, indexOfComparisionOperator);
+	auto left = condition.substr(0, indexOfComparisionOperator);
+	auto right = condition.substr(indexOfComparisionOperator + comparisonOperator.size());
+
+	auto leftValue = evaluateArithmeticExpression(left);
+	auto rightValue = evaluateArithmeticExpression(right);
+
+	if (comparisonOperator == "<") {
+		return left < right;
+	}
+	else if (comparisonOperator == ">") {
+		return left > right;
+	}
+	else if (comparisonOperator == "<=") {
+		return left <= right;
+	}
+	else if (comparisonOperator == ">=") {
+		return left >= right;
+	}
+	else if (comparisonOperator == "=") {
+		return left == right;
+	}
+	else if (comparisonOperator == "!=") {
+		return left != right;
+	}
+}
 
 double evaluateArithmeticExpression(string expression)
 {
@@ -49,6 +83,23 @@ double evaluateArithmeticExpression(string expression)
 		}
 	}
 	return 0;
+}
+
+string getFullOperator(string expression, int startingPosition)
+{
+	auto operatorCharacters = "<>!=";
+	if (!(stringContainsCharacter(operatorCharacters, expression[startingPosition]))) {
+		throw "Not given a comparison operator.";
+	}
+	else if (expression.size() == startingPosition) {
+		return string(1, expression[startingPosition]);
+	}
+	else if (stringContainsCharacter(operatorCharacters, expression[startingPosition + 1])) {
+		return expression.substr(startingPosition, 2);
+	}
+	else {
+		return string(1, expression[startingPosition]);
+	}
 }
 
 double handleBrackets(std::string &expression)
@@ -389,6 +440,21 @@ void runArithmeticEvaluationTests()
 	exp = "-435 + 5*(435-564+324)/324 + 3454/3 - (324 - 345 * (3454 + (43*7))) - 9";
 	result = evaluateArithmeticExpression(exp);
 	cout << ((-435 + 5 * (435 - 564 + 324) / 324 + 3454 / 3 - (324 - 345 * (3454 + (43 * 7))) - 9 - result) < 0.001) << endl;
+
+	// evaluateArithmeticCondition1
+	string exp9 = "123 < 456";
+	bool result9 = evaluateArithmeticCondition(exp9);
+	cout << (true == result9) << endl;
+
+	// evaluateArithmeticCondition1
+	exp9 = "(5+6)*17-5 - 182 <= 0.01";
+	result9 = evaluateArithmeticCondition(exp9);
+	cout << (true == result9) << endl;
+
+	// evaluateArithmeticCondition1
+	exp9 = "16 > 17";
+	result9 = evaluateArithmeticCondition(exp9);
+	cout << (false == result9) << endl;
 }
 
 //string getNextVariable(string expression, int startingPosition)
