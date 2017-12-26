@@ -1,24 +1,21 @@
 #include "stdafx.h"
 #include "BooleanTree.h"
+#include "Utilities.h"
 
 #include <string>
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <regex>
 
 using namespace std;
 
 string getNextBooleanExpression(string expression, int position);
 string getNextBooleanOperator(string expression, int position);
 char parseBooleanOperator(string booleanOperator);
-bool stringContainsCharacter2(string expression, char character, int startingPosition = 0);
-string getTermsBetweenBracketsIncludingBrackets2(string expression, int position);
-int indexOfFirstChar2(string expression, char character, int position);
-int indexOfClosingBracket2(string expression, int position);
-unique_ptr<BooleanTree> parseBooleansExpressionToTree(string expression);
 
-unique_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
+shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 {
 	// remove whitespace
 	expression.erase(std::remove(expression.begin(), expression.end(), ' '), expression.end());
@@ -34,13 +31,11 @@ unique_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 	string firstBooleanExpression = getNextBooleanExpression(expression, 0);
 
 	if (expression.size() == firstBooleanExpression.size()) {
-		if (expression[0] == '(') {
+		if ((expression[0] == '(') && (expression[expression.size() - 1] == ')')) {;
 			return parseBooleansExpressionToTree(expression.substr(1, expression.size() - 2));
 		}
-		else {
-			tree->condition = expression;
-			return tree;
-		}
+		tree->condition = expression;
+		return tree;
 	}
 	string firstBooleanOperator = getNextBooleanOperator(expression, firstBooleanExpression.size());
 	char parsedOperator = parseBooleanOperator(firstBooleanOperator);
@@ -57,19 +52,26 @@ unique_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 string getNextBooleanExpression(string expression, int position)
 {
 	if (expression[position] == '(') {
-		int closingBracketPosition = indexOfClosingBracket2(expression, position);
-		return expression.substr(position, closingBracketPosition - position + 1);
+		int closingBracketPosition = indexOfClosingBracket(expression, position);
+		auto betweenBrackets = expression.substr(position, closingBracketPosition - position + 1);
+		regex booleanRegex("&|\||![^=]");
+		if (regex_match(betweenBrackets, booleanRegex)) {
+			return betweenBrackets;
+		}
+		else {
+			return betweenBrackets + getNextBooleanExpression(expression, position + betweenBrackets.size());
+		}
 	}
 	else {
 		// find first boolean character
 		int currentPosition = position;
 		while (currentPosition < expression.size())
 		{
-			if (stringContainsCharacter2("&|", expression[currentPosition])) {
+			if (stringContainsCharacter("&|", expression[currentPosition])) {
 				break;
 			}
 			// do ! seperately as != is an arithmetic condition
-			else if (stringContainsCharacter2("!", expression[currentPosition])) {
+			else if (stringContainsCharacter("!", expression[currentPosition])) {
 				if (!((currentPosition < expression.size() - 1) && (expression[currentPosition + 1] == '!'))) {
 					break;
 				}
@@ -83,7 +85,7 @@ string getNextBooleanExpression(string expression, int position)
 string getNextBooleanOperator(string expression, int position)
 {
 	const string booleanCharacters = "&|!";
-	if (!stringContainsCharacter2(booleanCharacters, expression[position])) {
+	if (!stringContainsCharacter(booleanCharacters, expression[position])) {
 		throw "Not given a boolean character.";
 	}
 	
@@ -102,52 +104,13 @@ char parseBooleanOperator(string booleanOperator)
 	return booleanOperator[0];
 }
 
-int indexOfClosingBracket2(string expression, int position) {
-	if (expression[position] != '(') {
-		throw "Not given brackets.";
-	}
-	int bracketBalance = 1;
-	int currentPosition = position + 1;
-	while (bracketBalance != 0) {
-		if (expression[currentPosition] == '(') {
-			bracketBalance++;
-		}
-		else if (expression[currentPosition] == ')') {
-			bracketBalance--;
-		}
-		currentPosition++;
-	}
-	return currentPosition - 1;
-}
 
-string getTermsBetweenBracketsIncludingBrackets2(string expression, int position)
-{
-	if (expression[position] != '(') {
-		throw "Not given brackets.";
-	}
-	int closingIndex = indexOfClosingBracket2(expression, position);
-	return expression.substr(position, closingIndex + 1);
-}
-
-bool stringContainsCharacter2(string expression, char character, int startingPosition)
-{
-	return expression.find(character, startingPosition) != string::npos;
-}
-
-int indexOfFirstChar2(string expression, char character, int position)
-{
-	for (size_t i = 0; i < expression.size(); i++)
-	{
-		if (expression[i] == character) {
-			return i;
-		}
-	}
-	throw "Character is not in string.";
-}
 
 void runBooleanExpressionParserTests() {
 
 	cout << "Running BooleanExpressionParser tests." << endl;
+
+	auto variables = map<string, double>();
 
 	string booleanExpression1 = "4y4y4yui&&(ewrejwid||false)";
 	string result1 = getNextBooleanExpression(booleanExpression1, 0);
@@ -159,51 +122,51 @@ void runBooleanExpressionParserTests() {
 
 	string booleanExpression2 = "true";
 	auto tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	bool result2 = tree2->evaluateNode();
+	bool result2 = tree2->evaluateNode(variables);
 	cout << (result2 == true) << endl;
 
 	booleanExpression2 = "false";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode();
+	result2 = tree2->evaluateNode(variables);
 	cout << (result2 == false) << endl;
 
 	booleanExpression2 = "(false)";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode();
+	result2 = tree2->evaluateNode(variables);
 	cout << (result2 == false) << endl;
 
 	booleanExpression2 = "!true";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode();
+	result2 = tree2->evaluateNode(variables);
 	cout << (result2 == false) << endl;
 
 	booleanExpression2 = "!(false)";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode();
+	result2 = tree2->evaluateNode(variables);
 	cout << (result2 == true) << endl;
 
 	booleanExpression2 = "true || false";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode();
+	result2 = tree2->evaluateNode(variables);
 	cout << (result2 == true) << endl;
 
 	booleanExpression2 = "true & false";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode();
+	result2 = tree2->evaluateNode(variables);
 	cout << (result2 == false) << endl;
 
 	booleanExpression2 = "(true || false) && !(true)";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode();
+	result2 = tree2->evaluateNode(variables);
 	cout << (result2 == false) << endl;
 
 	booleanExpression2 = "(true || false) && !true";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode();
+	result2 = tree2->evaluateNode(variables);
 	cout << (result2 == false) << endl;
 
 	booleanExpression2 = "((true) || (true || (false))) && (!(((true) || (false)) && (true)))";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode();
+	result2 = tree2->evaluateNode(variables);
 	cout << (result2 == false) << endl;
 }

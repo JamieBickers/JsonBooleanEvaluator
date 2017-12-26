@@ -1,22 +1,18 @@
 #pragma once
-#include<string>
-#include<memory>
+#include <string>
+#include <memory>
+#include "json.h"
 
 class BooleanTree
 {
 public:
 	char booleanOperator;
 	std::string condition;
-	std::unique_ptr<BooleanTree> leftChild;
-	std::unique_ptr<BooleanTree> rightChild;
+	std::shared_ptr<BooleanTree> leftChild;
+	std::shared_ptr<BooleanTree> rightChild;
 
-	bool evaluateNode();
-	bool evaluateNodeUsingStack();
-
-private:
-	bool evaluateChildrenWithOperator();
-	bool evaluateNotOperator();
-	bool evaluateEmptyOperator();
+	bool evaluateNode(nlohmann::json jsonObject);
 };
 
+bool evaluateNodeRecursive(std::shared_ptr<BooleanTree> tree, nlohmann::json jsonObject);
 void runBooleanTreeTests();

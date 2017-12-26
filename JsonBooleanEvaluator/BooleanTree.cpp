@@ -1,17 +1,40 @@
 #include "stdafx.h"
 #include "BooleanTree.h"
 #include "EvaluateArithmeticExpressions.h"
+#include "json.h"
+#include "VariableEvaluator.h"
 
 #include <iostream>
 #include <stack>
+#include <string>
+#include <regex>
 
 using namespace std;
+using json = nlohmann::json;
 
 bool evaluateTwoConditions(bool first, bool second, char booleanOperator);
 bool evaluateSingleCondition(bool condition, char booleanOperator);
-bool evaluateCondition(string condition);
+bool evaluateCondition(string condition, json jsonObject);
 
-bool BooleanTree::evaluateNode()
+bool evaluateNodeRecursive(shared_ptr<BooleanTree> node, json jsonObject)
+{
+	if ((node->leftChild) == NULL && (node->rightChild == NULL)) {
+		return evaluateCondition(node->condition, jsonObject);
+	}
+	else if (node->leftChild == NULL) {
+		return evaluateSingleCondition(evaluateNodeRecursive(node->rightChild, jsonObject), node->booleanOperator);
+	}
+	else if (node->rightChild == NULL) {
+		return evaluateSingleCondition(evaluateNodeRecursive(node->leftChild , jsonObject), node->booleanOperator);
+	}
+	else {
+		bool evaluatedLeftChild = evaluateNodeRecursive(node->leftChild, jsonObject);
+		bool evaluatedRightChild = evaluateNodeRecursive(node->rightChild, jsonObject);
+		return evaluateTwoConditions(evaluatedLeftChild, evaluatedRightChild, node->booleanOperator);
+	}
+}
+
+bool BooleanTree::evaluateNode(json jsonObject)
 {
 	stack <BooleanTree*> nodes;
 	stack<bool> booleanValues;
@@ -20,7 +43,8 @@ bool BooleanTree::evaluateNode()
 
 	while (nodes.size() > 0) {
 		auto currentNode = nodes.top();
-		if (booleanValues.size() >= 2 && ((currentNode->booleanOperator == '&') || (currentNode->booleanOperator == '|'))) {
+		if (booleanValues.size() >= 2
+			&& ((currentNode->booleanOperator == '&') || (currentNode->booleanOperator == '|'))) {
 			bool first = booleanValues.top();
 			booleanValues.pop();
 			bool second = booleanValues.top();
@@ -38,7 +62,7 @@ bool BooleanTree::evaluateNode()
 		}
 		else if (currentNode->leftChild == NULL) {
 			if (currentNode->rightChild == NULL) {
-				booleanValues.push(evaluateCondition((*currentNode).condition));
+				booleanValues.push(evaluateCondition(currentNode->condition, jsonObject));
 				nodes.pop();
 			}
 			else {
@@ -79,82 +103,20 @@ bool evaluateTwoConditions(bool first, bool second, char booleanOperator) {
 	}
 }
 
-bool BooleanTree::evaluateNodeUsingStack()
+bool evaluateCondition(string condition, json jsonObject)
 {
-	if (leftChild == NULL && rightChild == NULL) {
-		return evaluateCondition(condition);
-	}
-	else {
-		return evaluateChildrenWithOperator();
-	}
-}
-
-bool evaluateCondition(string condition)
-{
+	regex arithmeticOperatorRegex("<|>|=");
 	if (condition == "true") {
 		return true;
 	}
 	else if (condition == "false") {
 		return false;
 	}
-	else {
-		return evaluateArithmeticExpression(condition);
-	}
-}
-
-bool BooleanTree::evaluateChildrenWithOperator()
-{
-	if (leftChild == NULL || rightChild == NULL) {
-		if (booleanOperator == '!') {
-			return evaluateNotOperator();
-		}
-		else if (booleanOperator == NULL) {
-			return evaluateEmptyOperator();
-		}
-	}
-
-	bool left = leftChild->evaluateNode();
-	bool right = rightChild->evaluateNode();
-
-	if (booleanOperator == '&') {
-		return left && right;
-	}
-	else if (booleanOperator == '|') {
-		return left || right;
+	else if (regex_search(condition, arithmeticOperatorRegex)) {
+		return evaluateArithmeticCondition(condition, jsonObject);
 	}
 	else {
-		throw "Invalid operation.";
-	}
-}
-
-bool BooleanTree::evaluateNotOperator()
-{
-	if (booleanOperator != '!') {
-		throw "Invalid operation.";
-	}
-	else if (leftChild == NULL) {
-		return !rightChild->evaluateNode();
-	}
-	else if (rightChild == NULL) {
-		return !leftChild->evaluateNode();
-	}
-	else {
-		throw "cannot use not if both children are not null.";
-	}
-}
-
-bool BooleanTree::evaluateEmptyOperator() {
-	if (booleanOperator != NULL) {
-		throw "Invalid operation.";
-	}
-	else if (leftChild == NULL) {
-		return rightChild->evaluateNode();
-	}
-	else if (rightChild == NULL) {
-		return leftChild->evaluateNode();
-	}
-	else {
-		throw "cannot use empty operator if both children are not null.";
+		return evaluateVariable<bool>(jsonObject, condition);
 	}
 }
 
@@ -162,17 +124,19 @@ void runBooleanTreeTests()
 {
 	cout << "Running BooleanTree tests." << endl;
 
+	auto varables = map<string, double>();
+
 	auto initialNode = unique_ptr<BooleanTree>(new BooleanTree());
 	initialNode->condition = "true";
-	bool result = initialNode->evaluateNode();
+	bool result = initialNode->evaluateNode(varables);
 	cout << (result == true) << endl;
 
 	initialNode->condition = "false";
-	result = initialNode->evaluateNode();
+	result = initialNode->evaluateNode(varables);
 	cout << (result == false) << endl;
 
 	initialNode->condition = "false";
-	result = initialNode->evaluateNodeUsingStack();
+	result = initialNode->evaluateNode(varables);
 	cout << (result == false) << endl;
 
 	// long test
@@ -204,42 +168,42 @@ void runBooleanTreeTests()
 	initialNode->rightChild->rightChild->rightChild->booleanOperator = NULL;
 	initialNode->rightChild->rightChild->rightChild->leftChild->condition = "true";
 
-	result = initialNode->evaluateNode();
+	result = initialNode->evaluateNode(varables);
 	cout << (result == false) << endl;
 
-	result = initialNode->leftChild->evaluateNode();
+	result = initialNode->leftChild->evaluateNode(varables);
 	cout << (result == true) << endl;
 
-	result = initialNode->rightChild->evaluateNode();
+	result = initialNode->rightChild->evaluateNode(varables);
 	cout << (result == false) << endl;
 
-	result = initialNode->leftChild->leftChild->evaluateNode();
+	result = initialNode->leftChild->leftChild->evaluateNode(varables);
 	cout << (result == true) << endl;
 
-	result = initialNode->leftChild->rightChild->evaluateNode();
+	result = initialNode->leftChild->rightChild->evaluateNode(varables);
 	cout << (result == true) << endl;
 
-	result = initialNode->rightChild->rightChild->evaluateNode();
+	result = initialNode->rightChild->rightChild->evaluateNode(varables);
 	cout << (result == true) << endl;
 
-	result = initialNode->leftChild->rightChild->leftChild->evaluateNode();
+	result = initialNode->leftChild->rightChild->leftChild->evaluateNode(varables);
 	cout << (result == true) << endl;
 
-	result = initialNode->leftChild->rightChild->rightChild->evaluateNode();
+	result = initialNode->leftChild->rightChild->rightChild->evaluateNode(varables);
 	cout << (result == false) << endl;
 
-	result = initialNode->rightChild->rightChild->leftChild->evaluateNode();
+	result = initialNode->rightChild->rightChild->leftChild->evaluateNode(varables);
 	cout << (result == true) << endl;
 
-	result = initialNode->rightChild->rightChild->rightChild->evaluateNode();
+	result = initialNode->rightChild->rightChild->rightChild->evaluateNode(varables);
 	cout << (result == true) << endl;
 
-	result = initialNode->rightChild->rightChild->leftChild->leftChild->evaluateNode();
+	result = initialNode->rightChild->rightChild->leftChild->leftChild->evaluateNode(varables);
 	cout << (result == true) << endl;
 
-	result = initialNode->rightChild->rightChild->leftChild->rightChild->evaluateNode();
+	result = initialNode->rightChild->rightChild->leftChild->rightChild->evaluateNode(varables);
 	cout << (result == false) << endl;
 
-	result = initialNode->rightChild->rightChild->rightChild->leftChild->evaluateNode();
+	result = initialNode->rightChild->rightChild->rightChild->leftChild->evaluateNode(varables);
 	cout << (result == true) << endl;
 }

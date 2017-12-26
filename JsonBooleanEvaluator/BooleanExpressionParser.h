@@ -1,6 +1,7 @@
 #pragma once
 #include "BooleanTree.h"
-#include<string>
+#include <string>
+#include <memory>
 
-BooleanTree parseBooleansExpressionToTree(std::string expression);
+std::shared_ptr<BooleanTree> parseBooleansExpressionToTree(std::string expression);
 void runBooleanExpressionParserTests();
