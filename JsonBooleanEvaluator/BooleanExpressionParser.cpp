@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "BooleanTree.h"
 #include "Utilities.h"
+#include "json.h"
+#include "EvaluateArithmeticExpressions.h"
 
 #include <string>
 #include <iostream>
@@ -10,21 +12,24 @@
 #include <regex>
 
 using namespace std;
+using json = nlohmann::json;
 
 string getNextBooleanExpression(string expression, int position);
 string getNextBooleanOperator(string expression, int position);
 char parseBooleanOperator(string booleanOperator);
+void setCondition(shared_ptr<BooleanTree> tree, string condition);
+string getFullOperator(string expression, int startingPosition);
 
 shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 {
 	// remove whitespace
 	expression.erase(std::remove(expression.begin(), expression.end(), ' '), expression.end());
 
-	auto tree = unique_ptr<BooleanTree>(new BooleanTree());
+	auto tree = shared_ptr<BooleanTree>(new BooleanTree());
 
 	if (expression[0] == '!') {
-		tree->booleanOperator = '!';
-		tree->rightChild = parseBooleansExpressionToTree(expression.substr(1));
+		tree->setBooleanOperator('!');
+		tree->setRightChild(parseBooleansExpressionToTree(expression.substr(1)));
 		return tree;
 	}
 
@@ -34,19 +39,58 @@ shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 		if ((expression[0] == '(') && (expression[expression.size() - 1] == ')')) {;
 			return parseBooleansExpressionToTree(expression.substr(1, expression.size() - 2));
 		}
-		tree->condition = expression;
+		setCondition(tree, expression);
 		return tree;
 	}
 	string firstBooleanOperator = getNextBooleanOperator(expression, firstBooleanExpression.size());
 	char parsedOperator = parseBooleanOperator(firstBooleanOperator);
 
-	tree->booleanOperator = parsedOperator;
+	tree->setBooleanOperator(parsedOperator);
 	
-	tree->leftChild = parseBooleansExpressionToTree(firstBooleanExpression);
+	tree->setLeftChild(parseBooleansExpressionToTree(firstBooleanExpression));
 	
 	string restOfExpression = expression.substr(firstBooleanExpression.size() + firstBooleanOperator.size());
-	tree->rightChild = parseBooleansExpressionToTree(restOfExpression);
+	tree->setRightChild(parseBooleansExpressionToTree(restOfExpression));
 	return tree;
+}
+
+void setCondition(shared_ptr<BooleanTree> tree, string condition)
+{
+	// remove whitespace
+	condition.erase(std::remove(condition.begin(), condition.end(), ' '), condition.end());
+
+	regex arithmeticComparisonCharacters("<|>|!|=");
+	if (!regex_search(condition, arithmeticComparisonCharacters)) {
+		tree->setBooleanCondition(condition);
+		return;
+	}
+
+	auto indexOfComparisionOperator = condition.find_first_of("<>!=", 0);
+	auto comparisonOperator = getFullOperator(condition, indexOfComparisionOperator);
+	auto left = condition.substr(0, indexOfComparisionOperator);
+	auto right = condition.substr(indexOfComparisionOperator + comparisonOperator.size());
+	auto arithmeticCondition = shared_ptr<ArithmeticCondition>(new ArithmeticCondition());
+	arithmeticCondition->comparison = comparisonOperator;
+	arithmeticCondition->left = parseArithmeticExpressionToTree(left);
+	arithmeticCondition->right = parseArithmeticExpressionToTree(right);
+	tree->setArithmeticCondition(arithmeticCondition);
+}
+
+string getFullOperator(string expression, int startingPosition)
+{
+	auto operatorCharacters = "<>!=";
+	if (!(stringContainsCharacter(operatorCharacters, expression[startingPosition]))) {
+		throw "Not given a comparison operator.";
+	}
+	else if (expression.size() == startingPosition) {
+		return string(1, expression[startingPosition]);
+	}
+	else if (stringContainsCharacter(operatorCharacters, expression[startingPosition + 1])) {
+		return expression.substr(startingPosition, 2);
+	}
+	else {
+		return string(1, expression[startingPosition]);
+	}
 }
 
 string getNextBooleanExpression(string expression, int position)
@@ -54,7 +98,7 @@ string getNextBooleanExpression(string expression, int position)
 	if (expression[position] == '(') {
 		int closingBracketPosition = indexOfClosingBracket(expression, position);
 		auto betweenBrackets = expression.substr(position, closingBracketPosition - position + 1);
-		regex booleanRegex("&|\||![^=]");
+		regex booleanRegex("&|\\||![^=]");
 		if (regex_match(betweenBrackets, booleanRegex)) {
 			return betweenBrackets;
 		}
@@ -64,7 +108,7 @@ string getNextBooleanExpression(string expression, int position)
 	}
 	else {
 		// find first boolean character
-		int currentPosition = position;
+		unsigned currentPosition = position;
 		while (currentPosition < expression.size())
 		{
 			if (stringContainsCharacter("&|", expression[currentPosition])) {
@@ -90,7 +134,7 @@ string getNextBooleanOperator(string expression, int position)
 	}
 	
 	string nextOperator;
-	int currentPosition = position;
+	unsigned currentPosition = position;
 	while ((expression[currentPosition] == expression[position]) && (currentPosition < expression.size()))
 	{
 		nextOperator.push_back(expression[currentPosition]);
@@ -110,7 +154,7 @@ void runBooleanExpressionParserTests() {
 
 	cout << "Running BooleanExpressionParser tests." << endl;
 
-	auto variables = map<string, double>();
+	json variables;
 
 	string booleanExpression1 = "4y4y4yui&&(ewrejwid||false)";
 	string result1 = getNextBooleanExpression(booleanExpression1, 0);

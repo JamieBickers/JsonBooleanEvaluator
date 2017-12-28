@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -143,6 +143,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ArithmeticCondition.h" />
+    <ClInclude Include="ArithmeticTree.h" />
     <ClInclude Include="BooleanExpressionParser.h" />
     <ClInclude Include="BooleanTree.h" />
     <ClInclude Include="EvaluateArithmeticExpressions.h" />
@@ -153,6 +155,8 @@
     <ClInclude Include="VariableEvaluator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArithmeticCondition.cpp" />
+    <ClCompile Include="ArithmeticTree.cpp" />
     <ClCompile Include="BooleanExpressionParser.cpp" />
     <ClCompile Include="BooleanTree.cpp" />
     <ClCompile Include="EvaluateArithmeticExpressions.cpp" />

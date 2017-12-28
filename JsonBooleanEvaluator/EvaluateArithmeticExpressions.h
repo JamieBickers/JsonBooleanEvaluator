@@ -2,7 +2,7 @@
 #include <string>
 #include <string>
 #include "json.h"
+#include "ArithmeticTree.h"
 
-double evaluateArithmeticExpression(std::string expression, nlohmann::json jsonObject);
-bool evaluateArithmeticCondition(std::string condition, nlohmann::json jsonObject);
+std::shared_ptr<ArithmeticTree> parseArithmeticExpressionToTree(std::string expression);
 void runArithmeticEvaluationTests();

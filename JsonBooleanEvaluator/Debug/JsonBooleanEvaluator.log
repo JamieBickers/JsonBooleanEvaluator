@@ -1,2 +1,29 @@
-﻿  JsonBooleanEvaluator.cpp
+﻿  stdafx.cpp
+  VariableEvaluator.cpp
+c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(18): warning C4244: 'argument': conversion from 'double' to 'nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer>::size_type', possible loss of data
+  c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.cpp(41): note: see reference to function template instantiation 'T evaluateVariable<int>(nlohmann::json,std::string)' being compiled
+          with
+          [
+              T=int
+          ]
+  Utilities.cpp
+  JsonBooleanEvaluator.cpp
+  EvaluateArithmeticExpressions.cpp
+  BooleanTree.cpp
+c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(18): warning C4244: 'argument': conversion from 'double' to 'nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer>::size_type', possible loss of data
+  c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\booleantree.cpp(157): note: see reference to function template instantiation 'T evaluateVariable<bool>(nlohmann::json,std::string)' being compiled
+          with
+          [
+              T=bool
+          ]
+  BooleanExpressionParser.cpp
+  ArithmeticTree.cpp
+c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(18): warning C4244: 'argument': conversion from 'double' to 'nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer>::size_type', possible loss of data
+  c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\arithmetictree.cpp(17): note: see reference to function template instantiation 'T evaluateVariable<double>(nlohmann::json,std::string)' being compiled
+          with
+          [
+              T=double
+          ]
+  ArithmeticCondition.cpp
+  Generating Code...
   JsonBooleanEvaluator.vcxproj -> C:\Users\Jamie\Desktop\JsonBooleanEvaluator\Debug\JsonBooleanEvaluator.exe
