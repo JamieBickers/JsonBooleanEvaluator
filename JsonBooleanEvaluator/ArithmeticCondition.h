@@ -10,6 +10,7 @@ public:
 	std::shared_ptr<ArithmeticTree> right;
 	std::string comparison;
 
-	bool evaluateCondition(nlohmann::json variables);
+	bool evaluateCondition(nlohmann::json variables,
+		std::map<std::string, double> additionalVariables = std::map<std::string, double>());
 };
 

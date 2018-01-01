@@ -21,7 +21,8 @@ public:
 	void setLeftChild(std::shared_ptr<BooleanTree> leftChild);
 	void setRightChild(std::shared_ptr<BooleanTree> rightChild);
 
-	bool evaluateNode(nlohmann::json jsonObject);
+	bool evaluateNode(nlohmann::json jsonObject,
+		std::map<std::string, double> additionalVariables = std::map<std::string, double>());
 
 private:
 	char booleanOperator;

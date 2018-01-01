@@ -19,6 +19,7 @@ string getNextBooleanOperator(string expression, int position);
 char parseBooleanOperator(string booleanOperator);
 void setCondition(shared_ptr<BooleanTree> tree, string condition);
 string getFullOperator(string expression, int startingPosition);
+int findIndexOfComparisonOperator(string condition, int position);
 
 shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 {
@@ -65,7 +66,7 @@ void setCondition(shared_ptr<BooleanTree> tree, string condition)
 		return;
 	}
 
-	auto indexOfComparisionOperator = condition.find_first_of("<>!=", 0);
+	auto indexOfComparisionOperator = findIndexOfComparisonOperator(condition, 0);
 	auto comparisonOperator = getFullOperator(condition, indexOfComparisionOperator);
 	auto left = condition.substr(0, indexOfComparisionOperator);
 	auto right = condition.substr(indexOfComparisionOperator + comparisonOperator.size());
@@ -74,6 +75,24 @@ void setCondition(shared_ptr<BooleanTree> tree, string condition)
 	arithmeticCondition->left = parseArithmeticExpressionToTree(left);
 	arithmeticCondition->right = parseArithmeticExpressionToTree(right);
 	tree->setArithmeticCondition(arithmeticCondition);
+}
+
+int findIndexOfComparisonOperator(string condition, int position)
+{
+	regex arrayMethodRegex("\\]\\.");
+	smatch matches;
+	auto restOfCondition = condition.substr(position);
+	regex_search(restOfCondition, matches, arrayMethodRegex);
+	if (matches.size() > 0) {
+		auto indexOfTheOpeningBracket = indexOfNextOpeningBracket(condition, matches.position(0) + position);
+		auto indexOfTheClosingBracket = indexOfClosingBracket(condition, indexOfTheOpeningBracket);
+		return findIndexOfComparisonOperator(condition, indexOfTheClosingBracket);
+	}
+	int first = condition.find_first_of("<>!=", position);
+	if ((condition[first] == '=') && condition[first + 1] == '>') {
+		return findIndexOfComparisonOperator(condition, first + 2);
+	}
+	return first;
 }
 
 string getFullOperator(string expression, int startingPosition)
@@ -111,7 +130,10 @@ string getNextBooleanExpression(string expression, int position)
 		unsigned currentPosition = position;
 		while (currentPosition < expression.size())
 		{
-			if (stringContainsCharacter("&|", expression[currentPosition])) {
+			if (expression[currentPosition] == '(') {
+				currentPosition = indexOfClosingBracket(expression, currentPosition);
+			}
+			else if (stringContainsCharacter("&|", expression[currentPosition])) {
 				break;
 			}
 			// do ! seperately as != is an arithmetic condition

@@ -8,25 +8,25 @@
 using json = nlohmann::json;
 using namespace std;
 
-double ArithmeticTree::evaluateNode(json variables)
+double ArithmeticTree::evaluateNode(json variables, map<string, double> additionalVariables)
 {
 	if (!isnan(value)) {
 		return value;
 	}
 	else if (variable != "") {
-		return evaluateVariable<double>(variables, variable);
+		return evaluateVariable<double>(variables, variable, additionalVariables);
 	}
 	else if (arithmeticOperation == '+') {
-		return leftChild->evaluateNode(variables) + rightChild->evaluateNode(variables);
+		return leftChild->evaluateNode(variables, additionalVariables) + rightChild->evaluateNode(variables);
 	}
 	else if (arithmeticOperation == '-') {
-		return leftChild->evaluateNode(variables) - rightChild->evaluateNode(variables);
+		return leftChild->evaluateNode(variables, additionalVariables) - rightChild->evaluateNode(variables);
 	}
 	else if (arithmeticOperation == '*') {
-		return leftChild->evaluateNode(variables) * rightChild->evaluateNode(variables);
+		return leftChild->evaluateNode(variables, additionalVariables) * rightChild->evaluateNode(variables);
 	}
 	else if (arithmeticOperation == '/') {
-		return leftChild->evaluateNode(variables) / rightChild->evaluateNode(variables);
+		return leftChild->evaluateNode(variables, additionalVariables) / rightChild->evaluateNode(variables);
 	}
 	else {
 		throw "Invalid node.";

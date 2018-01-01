@@ -60,3 +60,13 @@ bool isNumeric(string possibleNumber)
 		return regex_match(possibleNumber, numericalRegex);
 	}
 }
+int indexOfNextOpeningBracket(string expression, int position)
+{
+	for (size_t i = position; i < expression.size(); i++)
+	{
+		if (expression[i] == '(') {
+			return i;
+		}
+	}
+	throw "No opening bracket.";
+}

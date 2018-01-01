@@ -22,7 +22,8 @@ public:
 	void setLeftChild(std::shared_ptr<ArithmeticTree> leftChild);
 	void setRightChild(std::shared_ptr<ArithmeticTree> rightChild);
 
-	double evaluateNode(nlohmann::json variables);
+	double evaluateNode(nlohmann::json variables,
+		std::map<std::string, double> additionalVariables = std::map<std::string, double>());
 
 private:
 	char arithmeticOperation;

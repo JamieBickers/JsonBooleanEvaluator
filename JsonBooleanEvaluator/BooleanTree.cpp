@@ -15,7 +15,7 @@ using json = nlohmann::json;
 
 bool evaluateTwoConditions(bool first, bool second, char booleanOperator);
 bool evaluateSingleCondition(bool condition, char booleanOperator);
-bool evaluateCondition(string condition, json jsonObject);
+bool evaluateCondition(string condition, json jsonObject, map<string, double> additionalVariables);
 
 char BooleanTree::getBooleanOperator()
 {
@@ -98,25 +98,25 @@ void BooleanTree::setRightChild(shared_ptr<BooleanTree> rightChild)
 	}
 }
 
-bool BooleanTree::evaluateNode(json variables)
+bool BooleanTree::evaluateNode(json variables, map<string, double> additionalVariables)
 {
 	if ((leftChild) == NULL && (rightChild == NULL)) {
 		if (arithmeticCondition != NULL) {
-			return arithmeticCondition->evaluateCondition(variables);
+			return arithmeticCondition->evaluateCondition(variables, additionalVariables);
 		}
 		else {
-			return evaluateCondition(booleanCondition, variables);
+			return evaluateCondition(booleanCondition, variables, additionalVariables);
 		}
 	}
 	else if (leftChild == NULL) {
-		return evaluateSingleCondition(rightChild->evaluateNode(variables), booleanOperator);
+		return evaluateSingleCondition(rightChild->evaluateNode(variables, additionalVariables), booleanOperator);
 	}
 	else if (rightChild == NULL) {
-		return evaluateSingleCondition(leftChild->evaluateNode(variables), booleanOperator);
+		return evaluateSingleCondition(leftChild->evaluateNode(variables, additionalVariables), booleanOperator);
 	}
 	else {
-		bool evaluatedLeftChild = leftChild->evaluateNode(variables);
-		bool evaluatedRightChild = rightChild->evaluateNode(variables);
+		bool evaluatedLeftChild = leftChild->evaluateNode(variables, additionalVariables);
+		bool evaluatedRightChild = rightChild->evaluateNode(variables, additionalVariables);
 		return evaluateTwoConditions(evaluatedLeftChild, evaluatedRightChild, booleanOperator);
 	}
 }
@@ -145,7 +145,7 @@ bool evaluateTwoConditions(bool first, bool second, char booleanOperator) {
 	}
 }
 
-bool evaluateCondition(string condition, json jsonObject)
+bool evaluateCondition(string condition, json jsonObject, map<string, double> additionalVariables)
 {
 	if (condition == "true") {
 		return true;
@@ -154,7 +154,7 @@ bool evaluateCondition(string condition, json jsonObject)
 		return false;
 	}
 	else {
-		return evaluateVariable<bool>(jsonObject, condition);
+		return evaluateVariable<bool>(jsonObject, condition, additionalVariables);
 	}
 }
 

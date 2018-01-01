@@ -34,6 +34,7 @@ shared_ptr<ArithmeticTree> parseArithmeticExpressionToTree(string expression)
 	}
 	auto firstExpression = firstArithmeticExpression(expression);
 	auto firstNode = make_shared<ArithmeticTree>(ArithmeticTree());
+	regex arrayMethodRegex("\\]\\.");
 	if (firstExpression[0] == '(') {
 		firstNode = parseArithmeticExpressionToTree(firstExpression.substr(1, firstExpression.size() - 2));
 	}
@@ -42,6 +43,9 @@ shared_ptr<ArithmeticTree> parseArithmeticExpressionToTree(string expression)
 	}
 	else if (containsArithmeticCharacter(firstExpression)) {
 		firstNode = parseArithmeticExpressionToTree(firstExpression);
+	}
+	else if (regex_search(firstExpression, arrayMethodRegex)) {
+		// stub
 	}
 	else {
 		firstNode->setVariable(firstExpression);
