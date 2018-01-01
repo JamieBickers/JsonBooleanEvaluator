@@ -32,6 +32,11 @@ shared_ptr<ArithmeticCondition> BooleanTree::getArithmeticCondition()
 	return this->arithmeticCondition;
 }
 
+shared_ptr<ArrayMethod<bool>> BooleanTree::getArrayMethod()
+{
+	return this->arrayMethod;
+}
+
 shared_ptr<BooleanTree> BooleanTree::getLeftChild()
 {
 	return this->leftChild;
@@ -44,7 +49,7 @@ shared_ptr<BooleanTree> BooleanTree::getRightChild()
 
 void BooleanTree::setBooleanOperator(char booleanOperator)
 {
-	if ((booleanCondition != "") || (arithmeticCondition != NULL)) {
+	if ((booleanCondition != "") || (arithmeticCondition != NULL) || (arrayMethod != NULL)) {
 		throw "Cannot have condition and operator.";
 	}
 	else {
@@ -60,6 +65,9 @@ void BooleanTree::setBooleanCondition(string condition)
 	else if (arithmeticCondition != NULL) {
 		throw "Cannot have boolean condition and arithmetic condition.";
 	}
+	else if (arrayMethod != NULL) {
+		throw "Cannot have array method and boolean condition.";
+	}
 	else {
 		this->booleanCondition = condition;
 	}
@@ -73,8 +81,27 @@ void BooleanTree::setArithmeticCondition(shared_ptr<ArithmeticCondition> conditi
 	else if (booleanCondition != "") {
 		throw "Cannot have boolean condition and arithmetic condition.";
 	}
+	else if (arrayMethod != NULL) {
+		throw "Cannot have array method and arithmetic condition.";
+	}
 	else {
 		this->arithmeticCondition = condition;
+	}
+}
+
+void BooleanTree::setArrayMethod(shared_ptr<ArrayMethod<bool>> method)
+{
+	if (booleanOperator != NULL) {
+		throw "Cannot have operator and array method.";
+	}
+	else if (booleanCondition != "") {
+		throw "Cannot have boolean condition and array method.";
+	}
+	else if (arithmeticCondition != NULL) {
+		throw "Cannot have arithmetic condition and arary method.";
+	}
+	else {
+		this->arrayMethod = method;
 	}
 }
 
@@ -104,8 +131,11 @@ bool BooleanTree::evaluateNode(json variables, map<string, double> additionalVar
 		if (arithmeticCondition != NULL) {
 			return arithmeticCondition->evaluateCondition(variables, additionalVariables);
 		}
-		else {
+		else if (booleanCondition != "") {
 			return evaluateCondition(booleanCondition, variables, additionalVariables);
+		}
+		else {
+			return arrayMethod->evaluateMethod(variables);
 		}
 	}
 	else if (leftChild == NULL) {

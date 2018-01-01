@@ -1,2 +1,3 @@
-﻿  BooleanExpressionParser.cpp
+﻿  JsonBooleanEvaluator.cpp
+c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(48): warning C4244: 'argument': conversion from 'double' to 'nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer>::size_type', possible loss of data
   JsonBooleanEvaluator.vcxproj -> C:\Users\Jamie\Desktop\JsonBooleanEvaluator\Debug\JsonBooleanEvaluator.exe

@@ -1,10 +1,14 @@
 #pragma once
 
+class BooleanTree;
 #include "ArithmeticCondition.h"
 #include "json.h"
-#include "BooleanTree.h"
 
 #include <string>
+
+bool any(std::string arrayVariable, nlohmann::json variables, std::shared_ptr<BooleanTree> condition, std::string lambdaVariable);
+bool all(std::string arrayVariable, nlohmann::json variables, std::shared_ptr<BooleanTree> condition, std::string lambdaVariable);
+int count(std::string arrayVariable, nlohmann::json variables, std::shared_ptr<BooleanTree> condition, std::string lambdaVariable);
 
 template <typename T>
 class ArrayMethod
@@ -32,7 +36,7 @@ private:
 	bool evaluateBooleanMethod(nlohmann::json variables)
 	{
 		if (method == "any") {
-			return any(variable, variables, lambdaVariable);
+			return any(variable, variables, condition, lambdaVariable);
 		}
 		else if (method == "all") {
 			return all(variable, variables, condition, lambdaVariable);

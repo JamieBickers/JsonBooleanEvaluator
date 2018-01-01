@@ -3,21 +3,24 @@
 #include <memory>
 #include "json.h"
 #include "ArithmeticCondition.h"
+//template<typename T> class ArrayMethod<T>;
+#include "ArrayMethod.h"
+
 
 class BooleanTree
 {
 public:
-	// getters
 	char getBooleanOperator();
 	std::string getBooleanCondition();
 	std::shared_ptr<ArithmeticCondition> getArithmeticCondition();
+	std::shared_ptr<ArrayMethod<bool>> getArrayMethod();
 	std::shared_ptr<BooleanTree> getLeftChild();
 	std::shared_ptr<BooleanTree> getRightChild();
 
-	// setters
 	void setBooleanOperator(char booleanOperator);
 	void setBooleanCondition(std::string condition);
 	void setArithmeticCondition(std::shared_ptr<ArithmeticCondition> arithmeticCondition);
+	void setArrayMethod(std::shared_ptr<ArrayMethod<bool>> arrayMethod);
 	void setLeftChild(std::shared_ptr<BooleanTree> leftChild);
 	void setRightChild(std::shared_ptr<BooleanTree> rightChild);
 
@@ -28,6 +31,7 @@ private:
 	char booleanOperator;
 	std::string booleanCondition;
 	std::shared_ptr<ArithmeticCondition> arithmeticCondition;
+	std::shared_ptr<ArrayMethod<bool>> arrayMethod;
 	std::shared_ptr<BooleanTree> leftChild;
 	std::shared_ptr<BooleanTree> rightChild;
 };

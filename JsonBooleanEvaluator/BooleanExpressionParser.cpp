@@ -3,6 +3,7 @@
 #include "Utilities.h"
 #include "json.h"
 #include "EvaluateArithmeticExpressions.h"
+#include "parseArrayMethod.h"
 
 #include <string>
 #include <iostream>
@@ -61,8 +62,14 @@ void setCondition(shared_ptr<BooleanTree> tree, string condition)
 	condition.erase(std::remove(condition.begin(), condition.end(), ' '), condition.end());
 
 	regex arithmeticComparisonCharacters("<|>|!|=");
+	regex arrayMethodRegex("\\]\\.");
 	if (!regex_search(condition, arithmeticComparisonCharacters)) {
 		tree->setBooleanCondition(condition);
+		return;
+	}
+	else if (regex_search(condition, arrayMethodRegex)) {
+		auto arrayMethod = parseArrayMethod<bool>(condition);
+		tree->setArrayMethod(arrayMethod);
 		return;
 	}
 

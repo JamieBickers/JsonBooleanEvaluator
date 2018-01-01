@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "BooleanTree.h"
 #include "ArrayMethod.h"
 #include "json.h"
 #include "ArithmeticCondition.h"
@@ -9,14 +10,14 @@
 using namespace std;
 using json = nlohmann::json;
 
-bool any(string arrayVariable, json variables, shared_ptr<ArithmeticCondition> condition, string lambdaVariable)
+bool any(string arrayVariable, json variables, shared_ptr<BooleanTree> condition, string lambdaVariable)
 {
 	map<string, double> additionalVariables;
 	auto evaluatedArray = evaluateVariable<vector<double>>(variables, arrayVariable);
 	for (size_t i = 0; i < evaluatedArray.size(); i++)
 	{
 		additionalVariables[lambdaVariable] = evaluatedArray[i];
-		auto satisfiesCondition = condition->evaluateCondition(variables, additionalVariables);
+		auto satisfiesCondition = condition->evaluateNode(variables, additionalVariables);
 		if (satisfiesCondition) {
 			return true;
 		}
@@ -24,14 +25,14 @@ bool any(string arrayVariable, json variables, shared_ptr<ArithmeticCondition> c
 	return false;
 }
 
-bool all(string arrayVariable, json variables, shared_ptr<ArithmeticCondition> condition, string lambdaVariable)
+bool all(string arrayVariable, json variables, shared_ptr<BooleanTree> condition, string lambdaVariable)
 {
 	map<string, double> additionalVariables;
 	auto evaluatedArray = evaluateVariable<vector<double>>(variables, arrayVariable);
 	for (size_t i = 0; i < evaluatedArray.size(); i++)
 	{
 		additionalVariables[lambdaVariable] = evaluatedArray[i];
-		auto satisfiesCondition = condition->evaluateCondition(variables, additionalVariables);
+		auto satisfiesCondition = condition->evaluateNode(variables, additionalVariables);
 		if (!satisfiesCondition) {
 			return false;
 		}
@@ -39,7 +40,7 @@ bool all(string arrayVariable, json variables, shared_ptr<ArithmeticCondition> c
 	return true;
 }
 
-int count(string arrayVariable, json variables, shared_ptr<ArithmeticCondition> condition, string lambdaVariable)
+int count(string arrayVariable, json variables, shared_ptr<BooleanTree> condition, string lambdaVariable)
 {
 	map<string, double> additionalVariables;
 	auto evaluatedArray = evaluateVariable<vector<double>>(variables, arrayVariable);
@@ -47,7 +48,7 @@ int count(string arrayVariable, json variables, shared_ptr<ArithmeticCondition> 
 	for (size_t i = 0; i < evaluatedArray.size(); i++)
 	{
 		additionalVariables[lambdaVariable] = evaluatedArray[i];
-		auto satisfiesCondition = condition->evaluateCondition(variables, additionalVariables);
+		auto satisfiesCondition = condition->evaluateNode(variables, additionalVariables);
 		if (satisfiesCondition) {
 			countSoFar++;
 		}

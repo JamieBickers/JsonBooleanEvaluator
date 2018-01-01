@@ -10,6 +10,7 @@
 #include <string>
 
 void runArrayMethodParsingTests();
+std::string getLambdaVariable(std::string expression);
 
 template <typename T>
 std::shared_ptr<ArrayMethod<T>> parseArrayMethod(std::string method)
