@@ -3,6 +3,8 @@
 #include "json.h"
 #include "VariableEvaluator.h"
 #include "ArithmeticTree.h"
+#include "ArrayMethod.h"
+#include "parseArrayMethod.h"
 
 #include <string>
 #include <iostream>
@@ -45,7 +47,8 @@ shared_ptr<ArithmeticTree> parseArithmeticExpressionToTree(string expression)
 		firstNode = parseArithmeticExpressionToTree(firstExpression);
 	}
 	else if (regex_search(firstExpression, arrayMethodRegex)) {
-		// stub
+		auto arrayMethod = parseArrayMethod<double>(expression);
+		firstNode->setArrayMethod(arrayMethod);
 	}
 	else {
 		firstNode->setVariable(firstExpression);

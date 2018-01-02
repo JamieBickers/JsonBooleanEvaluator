@@ -2,6 +2,7 @@
 #include "json.h"
 #include "ArithmeticTree.h"
 #include "VariableEvaluator.h"
+#include "ArrayMethod.h"
 
 #include <memory>
 
@@ -15,6 +16,9 @@ double ArithmeticTree::evaluateNode(json variables, map<string, double> addition
 	}
 	else if (variable != "") {
 		return evaluateVariable<double>(variables, variable, additionalVariables);
+	}
+	else if (arrayMethod != NULL) {
+		return arrayMethod->evaluateMethod(variables);
 	}
 	else if (arithmeticOperation == '+') {
 		return leftChild->evaluateNode(variables, additionalVariables) + rightChild->evaluateNode(variables);
@@ -47,6 +51,11 @@ string ArithmeticTree::getVariable()
 	return variable;
 }
 
+shared_ptr<ArrayMethod<double>> ArithmeticTree::getArrayMethod()
+{
+	return arrayMethod;
+}
+
 shared_ptr<ArithmeticTree> ArithmeticTree::getLeftChild()
 {
 	return leftChild;
@@ -59,8 +68,8 @@ shared_ptr<ArithmeticTree> ArithmeticTree::getRightChild()
 
 void ArithmeticTree::setArithmeticOperation(char arithmeticOperation)
 {
-	if ((!isnan(value)) || (variable != "")) {
-		throw "Cannot have value or variable as well as operation.";
+	if ((!isnan(value)) || (variable != "") || (arrayMethod != NULL)) {
+		throw "Cannot have value or variable or array method as well as operation.";
 	}
 	else if ((arithmeticOperation == '+') || (arithmeticOperation == '-')
 		|| (arithmeticOperation == '*') || (arithmeticOperation == '/')) {
@@ -78,6 +87,9 @@ void ArithmeticTree::setValue(double value)
 	else if (arithmeticOperation != NULL) {
 		throw "Cannot have value and operation.";
 	}
+	else if (arrayMethod != NULL) {
+		throw "Cannot have value and array method.";
+	}
 	else {
 		this->value = value;
 	}
@@ -91,8 +103,27 @@ void ArithmeticTree::setVariable(string variable)
 	else if (arithmeticOperation != NULL) {
 		throw "Cannot have varaible and operation.";
 	}
+	else if (arrayMethod != NULL) {
+		throw "Cannot have variable and array method.";
+	}
 	else {
 		this->variable = variable;
+	}
+}
+
+void ArithmeticTree::setArrayMethod(shared_ptr<ArrayMethod<double>> arrayMethod)
+{
+	if (!isnan(value)) {
+		throw "Cannot have array method and value.";
+	}
+	else if (arithmeticOperation != NULL) {
+		throw "Cannot have array method and operation.";
+	}
+	else if (variable != "") {
+		throw "Cannot have variable and array method.";
+	}
+	else {
+		this->arrayMethod = arrayMethod;
 	}
 }
 

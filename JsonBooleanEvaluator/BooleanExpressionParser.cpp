@@ -21,6 +21,7 @@ char parseBooleanOperator(string booleanOperator);
 void setCondition(shared_ptr<BooleanTree> tree, string condition);
 string getFullOperator(string expression, int startingPosition);
 int findIndexOfComparisonOperator(string condition, int position);
+string getConditionType(string condition);
 
 shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 {
@@ -58,30 +59,56 @@ shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 
 void setCondition(shared_ptr<BooleanTree> tree, string condition)
 {
-	// remove whitespace
-	condition.erase(std::remove(condition.begin(), condition.end(), ' '), condition.end());
+	auto conditionType = getConditionType(condition);
+
+	if (conditionType == "arithmetic") {
+		auto indexOfComparisionOperator = findIndexOfComparisonOperator(condition, 0);
+		auto comparisonOperator = getFullOperator(condition, indexOfComparisionOperator);
+		auto left = condition.substr(0, indexOfComparisionOperator);
+		auto right = condition.substr(indexOfComparisionOperator + comparisonOperator.size());
+		auto arithmeticCondition = shared_ptr<ArithmeticCondition>(new ArithmeticCondition());
+		arithmeticCondition->comparison = comparisonOperator;
+		arithmeticCondition->left = parseArithmeticExpressionToTree(left);
+		arithmeticCondition->right = parseArithmeticExpressionToTree(right);
+		tree->setArithmeticCondition(arithmeticCondition);
+	}
+	else if (conditionType == "array") {
+		auto arrayMethod = parseArrayMethod<bool>(condition);
+		tree->setArrayMethod(arrayMethod);
+	}
+	else if (conditionType == "boolean") {
+		tree->setBooleanCondition(condition);
+	}
+	else {
+		throw "Invalid condition type.";
+	}
 
 	regex arithmeticComparisonCharacters("<|>|!|=");
 	regex arrayMethodRegex("\\]\\.");
-	if (!regex_search(condition, arithmeticComparisonCharacters)) {
-		tree->setBooleanCondition(condition);
-		return;
-	}
-	else if (regex_search(condition, arrayMethodRegex)) {
-		auto arrayMethod = parseArrayMethod<bool>(condition);
-		tree->setArrayMethod(arrayMethod);
-		return;
-	}
+}
 
-	auto indexOfComparisionOperator = findIndexOfComparisonOperator(condition, 0);
-	auto comparisonOperator = getFullOperator(condition, indexOfComparisionOperator);
-	auto left = condition.substr(0, indexOfComparisionOperator);
-	auto right = condition.substr(indexOfComparisionOperator + comparisonOperator.size());
-	auto arithmeticCondition = shared_ptr<ArithmeticCondition>(new ArithmeticCondition());
-	arithmeticCondition->comparison = comparisonOperator;
-	arithmeticCondition->left = parseArithmeticExpressionToTree(left);
-	arithmeticCondition->right = parseArithmeticExpressionToTree(right);
-	tree->setArithmeticCondition(arithmeticCondition);
+string getConditionType(string condition)
+{
+	unsigned i = 0;
+	while (i < condition.size())
+	{
+		if (condition[i] == '(') {
+			i = indexOfClosingBracket(condition, i);
+		}
+		else if (stringContainsCharacter("<|>|!|=", condition[i])) {
+			return "arithmetic";
+		}
+		else {
+			i++;
+		}
+	}
+	regex arrayMethodRegex("\\]\\.");
+	if (regex_search(condition, arrayMethodRegex)) {
+		return "array";
+	}
+	else {
+		return "boolean";
+	}
 }
 
 int findIndexOfComparisonOperator(string condition, int position)

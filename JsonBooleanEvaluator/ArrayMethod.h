@@ -1,7 +1,7 @@
 #pragma once
 
 class BooleanTree;
-#include "ArithmeticCondition.h"
+class ArithmeticCondition;
 #include "json.h"
 
 #include <string>
@@ -49,7 +49,7 @@ private:
 	double evaluateNumericalMethod(nlohmann::json variables)
 	{
 		if (method == "count") {
-
+			return count(variable, variables, condition, lambdaVariable);
 		}
 		else {
 			throw "Invalid method.";

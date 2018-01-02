@@ -3,7 +3,6 @@
 #include <memory>
 #include "json.h"
 #include "ArithmeticCondition.h"
-//template<typename T> class ArrayMethod<T>;
 #include "ArrayMethod.h"
 
 
