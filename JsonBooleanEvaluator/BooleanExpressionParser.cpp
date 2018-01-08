@@ -28,7 +28,7 @@ shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 	// remove whitespace
 	expression.erase(std::remove(expression.begin(), expression.end(), ' '), expression.end());
 
-	auto tree = shared_ptr<BooleanTree>(new BooleanTree());
+	auto tree = make_shared<BooleanTree>();
 
 	if (expression[0] == '!') {
 		tree->setBooleanOperator('!');
@@ -66,7 +66,7 @@ void setCondition(shared_ptr<BooleanTree> tree, string condition)
 		auto comparisonOperator = getFullOperator(condition, indexOfComparisionOperator);
 		auto left = condition.substr(0, indexOfComparisionOperator);
 		auto right = condition.substr(indexOfComparisionOperator + comparisonOperator.size());
-		auto arithmeticCondition = shared_ptr<ArithmeticCondition>(new ArithmeticCondition());
+		auto arithmeticCondition = make_shared<ArithmeticCondition>();
 		arithmeticCondition->comparison = comparisonOperator;
 		arithmeticCondition->left = parseArithmeticExpressionToTree(left);
 		arithmeticCondition->right = parseArithmeticExpressionToTree(right);

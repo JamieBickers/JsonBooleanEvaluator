@@ -18,6 +18,7 @@ string getLambdaVariable(string expression)
 
 void runArrayMethodParsingTests()
 {
+	cout << "Running array method parsing test." << endl;
 	auto method = "[\"a\"][\"b\"].count(x => x > 0)";
 	auto result1 = parseArrayMethod<double>(method);
 	cout << (result1->lambdaVariable == "x") << endl;

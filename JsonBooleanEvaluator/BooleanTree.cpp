@@ -194,7 +194,7 @@ void runBooleanTreeTests()
 
 	json variables;
 
-	auto initialNode = shared_ptr<BooleanTree>(new BooleanTree());
+	auto initialNode = make_shared<BooleanTree>();
 	initialNode->setBooleanCondition("true");
 	bool result = initialNode->evaluateNode(variables);
 	cout << (result == true) << endl;

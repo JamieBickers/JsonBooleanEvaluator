@@ -27,7 +27,7 @@ std::shared_ptr<ArrayMethod<T>> parseArrayMethod(std::string method)
 	auto methodName = method.substr(indexOfStartOfMethod + 1, indexOfTheOpeningeBracket - indexOfStartOfMethod - 1);
 	auto arithmeticCondition = parseBooleansExpressionToTree(condition);
 
-	auto arrayMethod = shared_ptr<ArrayMethod<T>>(new ArrayMethod<T>);
+	auto arrayMethod = make_shared<ArrayMethod<T>>();
 	arrayMethod->variable = arrayVariable;
 	arrayMethod->lambdaVariable = lambdaVariable;
 	arrayMethod->method = methodName;
