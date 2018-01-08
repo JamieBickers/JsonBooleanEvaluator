@@ -9,7 +9,7 @@ std::vector<std::string> parseVariable(std::string variable);
 template <typename T>
 T evaluateVariable(nlohmann::json jsonObject, std::string variable)
 {
-	std::map<string, double> additionalVariables;
+	std::map<std::string, double> additionalVariables;
 	return evaluateVariable<T>(jsonObject, variable, additionalVariables);
 }
 

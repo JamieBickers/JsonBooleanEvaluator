@@ -10,39 +10,38 @@
 #include <regex>
 #include <queue>
 
-using namespace std;
 using json = nlohmann::json;
 
 bool evaluateTwoConditions(bool first, bool second, char booleanOperator);
 bool evaluateSingleCondition(bool condition, char booleanOperator);
-bool evaluateCondition(string condition, json jsonObject, map<string, double> additionalVariables);
+bool evaluateCondition(std::string condition, json jsonObject, std::map<std::string, double> additionalVariables);
 
 char BooleanTree::getBooleanOperator()
 {
 	return this->booleanOperator;
 }
 
-string BooleanTree::getBooleanCondition()
+std::string BooleanTree::getBooleanCondition()
 {
 	return this->booleanCondition;
 }
 
-shared_ptr<ArithmeticCondition> BooleanTree::getArithmeticCondition()
+std::shared_ptr<ArithmeticCondition> BooleanTree::getArithmeticCondition()
 {
 	return this->arithmeticCondition;
 }
 
-shared_ptr<ArrayMethod<bool>> BooleanTree::getArrayMethod()
+std::shared_ptr<ArrayMethod<bool>> BooleanTree::getArrayMethod()
 {
 	return this->arrayMethod;
 }
 
-shared_ptr<BooleanTree> BooleanTree::getLeftChild()
+std::shared_ptr<BooleanTree> BooleanTree::getLeftChild()
 {
 	return this->leftChild;
 }
 
-shared_ptr<BooleanTree> BooleanTree::getRightChild()
+std::shared_ptr<BooleanTree> BooleanTree::getRightChild()
 {
 	return this->rightChild;
 }
@@ -57,7 +56,7 @@ void BooleanTree::setBooleanOperator(char booleanOperator)
 	}
 }
 
-void BooleanTree::setBooleanCondition(string condition)
+void BooleanTree::setBooleanCondition(std::string condition)
 {
 	if (booleanOperator != NULL) {
 		throw "Cannot have condition and operator.";
@@ -73,7 +72,7 @@ void BooleanTree::setBooleanCondition(string condition)
 	}
 }
 
-void BooleanTree::setArithmeticCondition(shared_ptr<ArithmeticCondition> condition)
+void BooleanTree::setArithmeticCondition(std::shared_ptr<ArithmeticCondition> condition)
 {
 	if (booleanOperator != NULL) {
 		throw "Cannot have condition and operator.";
@@ -89,7 +88,7 @@ void BooleanTree::setArithmeticCondition(shared_ptr<ArithmeticCondition> conditi
 	}
 }
 
-void BooleanTree::setArrayMethod(shared_ptr<ArrayMethod<bool>> method)
+void BooleanTree::setArrayMethod(std::shared_ptr<ArrayMethod<bool>> method)
 {
 	if (booleanOperator != NULL) {
 		throw "Cannot have operator and array method.";
@@ -105,7 +104,7 @@ void BooleanTree::setArrayMethod(shared_ptr<ArrayMethod<bool>> method)
 	}
 }
 
-void BooleanTree::setLeftChild(shared_ptr<BooleanTree> leftChild)
+void BooleanTree::setLeftChild(std::shared_ptr<BooleanTree> leftChild)
 {
 	if ((booleanCondition != "") || (arithmeticCondition != NULL)) {
 		throw "Cannot have condition and children.";
@@ -115,7 +114,7 @@ void BooleanTree::setLeftChild(shared_ptr<BooleanTree> leftChild)
 	}
 }
 
-void BooleanTree::setRightChild(shared_ptr<BooleanTree> rightChild)
+void BooleanTree::setRightChild(std::shared_ptr<BooleanTree> rightChild)
 {
 	if ((booleanCondition != "") || (arithmeticCondition != NULL)) {
 		throw "Cannot have condition and children.";
@@ -125,7 +124,7 @@ void BooleanTree::setRightChild(shared_ptr<BooleanTree> rightChild)
 	}
 }
 
-bool BooleanTree::evaluateNode(json variables, map<string, double> additionalVariables)
+bool BooleanTree::evaluateNode(json variables, std::map<std::string, double> additionalVariables)
 {
 	if ((leftChild) == NULL && (rightChild == NULL)) {
 		if (arithmeticCondition != NULL) {
@@ -175,7 +174,7 @@ bool evaluateTwoConditions(bool first, bool second, char booleanOperator) {
 	}
 }
 
-bool evaluateCondition(string condition, json jsonObject, map<string, double> additionalVariables)
+bool evaluateCondition(std::string condition, json jsonObject, std::map<std::string, double> additionalVariables)
 {
 	if (condition == "true") {
 		return true;
@@ -190,20 +189,20 @@ bool evaluateCondition(string condition, json jsonObject, map<string, double> ad
 
 void runBooleanTreeTests()
 {
-	cout << "Running BooleanTree tests." << endl;
+	std::cout << "Running BooleanTree tests." << std::endl;
 
 	json variables;
 
-	auto initialNode = make_shared<BooleanTree>();
+	auto initialNode = std::make_shared<BooleanTree>();
 	initialNode->setBooleanCondition("true");
 	bool result = initialNode->evaluateNode(variables);
-	cout << (result == true) << endl;
+	std::cout << (result == true) << std::endl;
 
 	initialNode->setBooleanCondition("false");
 	result = initialNode->evaluateNode(variables);
-	cout << (result == false) << endl;
+	std::cout << (result == false) << std::endl;
 
 	initialNode->setBooleanCondition("false");
 	result = initialNode->evaluateNode(variables);
-	cout << (result == false) << endl;
+	std::cout << (result == false) << std::endl;
 }

@@ -12,23 +12,22 @@
 #include <memory>
 #include <regex>
 
-using namespace std;
 using json = nlohmann::json;
 
-string getNextBooleanExpression(string expression, int position);
-string getNextBooleanOperator(string expression, int position);
-char parseBooleanOperator(string booleanOperator);
-void setCondition(shared_ptr<BooleanTree> tree, string condition);
-string getFullOperator(string expression, int startingPosition);
-int findIndexOfComparisonOperator(string condition, int position);
-string getConditionType(string condition);
+std::string getNextBooleanExpression(std::string expression, int position);
+std::string getNextBooleanOperator(std::string expression, int position);
+char parseBooleanOperator(std::string booleanOperator);
+void setCondition(std::shared_ptr<BooleanTree> tree, std::string condition);
+std::string getFullOperator(std::string expression, int startingPosition);
+int findIndexOfComparisonOperator(std::string condition, int position);
+std::string getConditionType(std::string condition);
 
-shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
+std::shared_ptr<BooleanTree> parseBooleansExpressionToTree(std::string expression)
 {
 	// remove whitespace
 	expression.erase(std::remove(expression.begin(), expression.end(), ' '), expression.end());
 
-	auto tree = make_shared<BooleanTree>();
+	auto tree = std::make_shared<BooleanTree>();
 
 	if (expression[0] == '!') {
 		tree->setBooleanOperator('!');
@@ -36,7 +35,7 @@ shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 		return tree;
 	}
 
-	string firstBooleanExpression = getNextBooleanExpression(expression, 0);
+	std::string firstBooleanExpression = getNextBooleanExpression(expression, 0);
 
 	if (expression.size() == firstBooleanExpression.size()) {
 		if ((expression[0] == '(') && (expression[expression.size() - 1] == ')')) {;
@@ -45,19 +44,19 @@ shared_ptr<BooleanTree> parseBooleansExpressionToTree(string expression)
 		setCondition(tree, expression);
 		return tree;
 	}
-	string firstBooleanOperator = getNextBooleanOperator(expression, firstBooleanExpression.size());
+	std::string firstBooleanOperator = getNextBooleanOperator(expression, firstBooleanExpression.size());
 	char parsedOperator = parseBooleanOperator(firstBooleanOperator);
 
 	tree->setBooleanOperator(parsedOperator);
 	
 	tree->setLeftChild(parseBooleansExpressionToTree(firstBooleanExpression));
 	
-	string restOfExpression = expression.substr(firstBooleanExpression.size() + firstBooleanOperator.size());
+	std::string restOfExpression = expression.substr(firstBooleanExpression.size() + firstBooleanOperator.size());
 	tree->setRightChild(parseBooleansExpressionToTree(restOfExpression));
 	return tree;
 }
 
-void setCondition(shared_ptr<BooleanTree> tree, string condition)
+void setCondition(std::shared_ptr<BooleanTree> tree, std::string condition)
 {
 	auto conditionType = getConditionType(condition);
 
@@ -66,7 +65,7 @@ void setCondition(shared_ptr<BooleanTree> tree, string condition)
 		auto comparisonOperator = getFullOperator(condition, indexOfComparisionOperator);
 		auto left = condition.substr(0, indexOfComparisionOperator);
 		auto right = condition.substr(indexOfComparisionOperator + comparisonOperator.size());
-		auto arithmeticCondition = make_shared<ArithmeticCondition>();
+		auto arithmeticCondition = std::make_shared<ArithmeticCondition>();
 		arithmeticCondition->comparison = comparisonOperator;
 		arithmeticCondition->left = parseArithmeticExpressionToTree(left);
 		arithmeticCondition->right = parseArithmeticExpressionToTree(right);
@@ -83,11 +82,11 @@ void setCondition(shared_ptr<BooleanTree> tree, string condition)
 		throw "Invalid condition type.";
 	}
 
-	regex arithmeticComparisonCharacters("<|>|!|=");
-	regex arrayMethodRegex("\\]\\.");
+	std::regex arithmeticComparisonCharacters("<|>|!|=");
+	std::regex arrayMethodRegex("\\]\\.");
 }
 
-string getConditionType(string condition)
+std::string getConditionType(std::string condition)
 {
 	unsigned i = 0;
 	while (i < condition.size())
@@ -102,7 +101,7 @@ string getConditionType(string condition)
 			i++;
 		}
 	}
-	regex arrayMethodRegex("\\]\\.");
+	std::regex arrayMethodRegex("\\]\\.");
 	if (regex_search(condition, arrayMethodRegex)) {
 		return "array";
 	}
@@ -111,10 +110,10 @@ string getConditionType(string condition)
 	}
 }
 
-int findIndexOfComparisonOperator(string condition, int position)
+int findIndexOfComparisonOperator(std::string condition, int position)
 {
-	regex arrayMethodRegex("\\]\\.");
-	smatch matches;
+	std::regex arrayMethodRegex("\\]\\.");
+	std::smatch matches;
 	auto restOfCondition = condition.substr(position);
 	regex_search(restOfCondition, matches, arrayMethodRegex);
 	if (matches.size() > 0) {
@@ -129,29 +128,29 @@ int findIndexOfComparisonOperator(string condition, int position)
 	return first;
 }
 
-string getFullOperator(string expression, int startingPosition)
+std::string getFullOperator(std::string expression, int startingPosition)
 {
 	auto operatorCharacters = "<>!=";
 	if (!(stringContainsCharacter(operatorCharacters, expression[startingPosition]))) {
 		throw "Not given a comparison operator.";
 	}
 	else if (expression.size() == startingPosition) {
-		return string(1, expression[startingPosition]);
+		return std::string(1, expression[startingPosition]);
 	}
 	else if (stringContainsCharacter(operatorCharacters, expression[startingPosition + 1])) {
 		return expression.substr(startingPosition, 2);
 	}
 	else {
-		return string(1, expression[startingPosition]);
+		return std::string(1, expression[startingPosition]);
 	}
 }
 
-string getNextBooleanExpression(string expression, int position)
+std::string getNextBooleanExpression(std::string expression, int position)
 {
 	if (expression[position] == '(') {
 		int closingBracketPosition = indexOfClosingBracket(expression, position);
 		auto betweenBrackets = expression.substr(position, closingBracketPosition - position + 1);
-		regex booleanRegex("&|\\||![^=]");
+		std::regex booleanRegex("&|\\||![^=]");
 		if (regex_match(betweenBrackets, booleanRegex)) {
 			return betweenBrackets;
 		}
@@ -182,14 +181,14 @@ string getNextBooleanExpression(string expression, int position)
 	}
 }
 
-string getNextBooleanOperator(string expression, int position)
+std::string getNextBooleanOperator(std::string expression, int position)
 {
-	const string booleanCharacters = "&|!";
+	const std::string booleanCharacters = "&|!";
 	if (!stringContainsCharacter(booleanCharacters, expression[position])) {
 		throw "Not given a boolean character.";
 	}
 	
-	string nextOperator;
+	std::string nextOperator;
 	unsigned currentPosition = position;
 	while ((expression[currentPosition] == expression[position]) && (currentPosition < expression.size()))
 	{
@@ -199,7 +198,7 @@ string getNextBooleanOperator(string expression, int position)
 	return nextOperator;
 }
 
-char parseBooleanOperator(string booleanOperator)
+char parseBooleanOperator(std::string booleanOperator)
 {
 	return booleanOperator[0];
 }
@@ -208,65 +207,65 @@ char parseBooleanOperator(string booleanOperator)
 
 void runBooleanExpressionParserTests() {
 
-	cout << "Running BooleanExpressionParser tests." << endl;
+	std::cout << "Running BooleanExpressionParser tests." << std::endl;
 
 	json variables;
 
-	string booleanExpression1 = "4y4y4yui&&(ewrejwid||false)";
-	string result1 = getNextBooleanExpression(booleanExpression1, 0);
-	cout << (result1 == "4y4y4yui") << endl;
+	std::string booleanExpression1 = "4y4y4yui&&(ewrejwid||false)";
+	std::string result1 = getNextBooleanExpression(booleanExpression1, 0);
+	std::cout << (result1 == "4y4y4yui") << std::endl;
 
 	booleanExpression1 = "4y4y4yui&&(ewrejwid||false)";
 	result1 = getNextBooleanExpression(booleanExpression1, 10);
-	cout << (result1 == "(ewrejwid||false)") << endl;
+	std::cout << (result1 == "(ewrejwid||false)") << std::endl;
 
-	string booleanExpression2 = "true";
+	std::string booleanExpression2 = "true";
 	auto tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	bool result2 = tree2->evaluateNode(variables);
-	cout << (result2 == true) << endl;
+	std::cout << (result2 == true) << std::endl;
 
 	booleanExpression2 = "false";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	result2 = tree2->evaluateNode(variables);
-	cout << (result2 == false) << endl;
+	std::cout << (result2 == false) << std::endl;
 
 	booleanExpression2 = "(false)";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	result2 = tree2->evaluateNode(variables);
-	cout << (result2 == false) << endl;
+	std::cout << (result2 == false) << std::endl;
 
 	booleanExpression2 = "!true";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	result2 = tree2->evaluateNode(variables);
-	cout << (result2 == false) << endl;
+	std::cout << (result2 == false) << std::endl;
 
 	booleanExpression2 = "!(false)";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	result2 = tree2->evaluateNode(variables);
-	cout << (result2 == true) << endl;
+	std::cout << (result2 == true) << std::endl;
 
 	booleanExpression2 = "true || false";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	result2 = tree2->evaluateNode(variables);
-	cout << (result2 == true) << endl;
+	std::cout << (result2 == true) << std::endl;
 
 	booleanExpression2 = "true & false";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	result2 = tree2->evaluateNode(variables);
-	cout << (result2 == false) << endl;
+	std::cout << (result2 == false) << std::endl;
 
 	booleanExpression2 = "(true || false) && !(true)";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	result2 = tree2->evaluateNode(variables);
-	cout << (result2 == false) << endl;
+	std::cout << (result2 == false) << std::endl;
 
 	booleanExpression2 = "(true || false) && !true";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	result2 = tree2->evaluateNode(variables);
-	cout << (result2 == false) << endl;
+	std::cout << (result2 == false) << std::endl;
 
 	booleanExpression2 = "((true) || (true || (false))) && (!(((true) || (false)) && (true)))";
 	tree2 = parseBooleansExpressionToTree(booleanExpression2);
 	result2 = tree2->evaluateNode(variables);
-	cout << (result2 == false) << endl;
+	std::cout << (result2 == false) << std::endl;
 }

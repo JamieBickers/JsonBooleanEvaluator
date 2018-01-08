@@ -7,9 +7,8 @@
 #include <memory>
 
 using json = nlohmann::json;
-using namespace std;
 
-double ArithmeticTree::evaluateNode(json variables, map<string, double> additionalVariables)
+double ArithmeticTree::evaluateNode(json variables, std::map<std::string, double> additionalVariables)
 {
 	if (!isnan(value)) {
 		return value;
@@ -46,22 +45,22 @@ double ArithmeticTree::getValue()
 	return value;
 }
 
-string ArithmeticTree::getVariable()
+std::string ArithmeticTree::getVariable()
 {
 	return variable;
 }
 
-shared_ptr<ArrayMethod<double>> ArithmeticTree::getArrayMethod()
+std::shared_ptr<ArrayMethod<double>> ArithmeticTree::getArrayMethod()
 {
 	return arrayMethod;
 }
 
-shared_ptr<ArithmeticTree> ArithmeticTree::getLeftChild()
+std::shared_ptr<ArithmeticTree> ArithmeticTree::getLeftChild()
 {
 	return leftChild;
 }
 
-shared_ptr<ArithmeticTree> ArithmeticTree::getRightChild()
+std::shared_ptr<ArithmeticTree> ArithmeticTree::getRightChild()
 {
 	return rightChild;
 }
@@ -95,7 +94,7 @@ void ArithmeticTree::setValue(double value)
 	}
 }
 
-void ArithmeticTree::setVariable(string variable)
+void ArithmeticTree::setVariable(std::string variable)
 {
 	if (!isnan(value)) {
 		throw "Cannot have variable and value.";
@@ -111,7 +110,7 @@ void ArithmeticTree::setVariable(string variable)
 	}
 }
 
-void ArithmeticTree::setArrayMethod(shared_ptr<ArrayMethod<double>> arrayMethod)
+void ArithmeticTree::setArrayMethod(std::shared_ptr<ArrayMethod<double>> arrayMethod)
 {
 	if (!isnan(value)) {
 		throw "Cannot have array method and value.";
@@ -127,7 +126,7 @@ void ArithmeticTree::setArrayMethod(shared_ptr<ArrayMethod<double>> arrayMethod)
 	}
 }
 
-void ArithmeticTree::setLeftChild(shared_ptr<ArithmeticTree> leftChild)
+void ArithmeticTree::setLeftChild(std::shared_ptr<ArithmeticTree> leftChild)
 {
 	if ((variable != "") || (!isnan(value))) {
 		throw "Cannot have children with either variable of value.";
@@ -137,7 +136,7 @@ void ArithmeticTree::setLeftChild(shared_ptr<ArithmeticTree> leftChild)
 	}
 }
 
-void ArithmeticTree::setRightChild(shared_ptr<ArithmeticTree> rightChild)
+void ArithmeticTree::setRightChild(std::shared_ptr<ArithmeticTree> rightChild)
 {
 	if ((variable != "") || (!isnan(value))) {
 		throw "Cannot have children with either variable of value.";

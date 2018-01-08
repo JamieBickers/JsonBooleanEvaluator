@@ -5,9 +5,7 @@
 
 #include <iostream>
 
-using namespace std;
-
-string getLambdaVariable(string expression)
+std::string getLambdaVariable(std::string expression)
 {
 	auto endOfLambdaVariable = 0;
 	while (expression[endOfLambdaVariable] != '=') {
@@ -18,16 +16,16 @@ string getLambdaVariable(string expression)
 
 void runArrayMethodParsingTests()
 {
-	cout << "Running array method parsing test." << endl;
+	std::cout << "Running array method parsing test." << std::endl;
 	auto method = "[\"a\"][\"b\"].count(x => x > 0)";
 	auto result1 = parseArrayMethod<double>(method);
-	cout << (result1->lambdaVariable == "x") << endl;
-	cout << (result1->method == "count") << endl;
-	cout << (result1->variable == "[\"a\"][\"b\"]") << endl;
+	std::cout << (result1->lambdaVariable == "x") << std::endl;
+	std::cout << (result1->method == "count") << std::endl;
+	std::cout << (result1->variable == "[\"a\"][\"b\"]") << std::endl;
 
 	method = "[\"a\"][\"b\"].all(xyz => xyz >= 0 || xyz = -7)";
 	auto result2 = parseArrayMethod<bool>(method);
-	cout << (result2->lambdaVariable == "xyz") << endl;
-	cout << (result2->method == "all") << endl;
-	cout << (result1->variable == "[\"a\"][\"b\"]") << endl;
+	std::cout << (result2->lambdaVariable == "xyz") << std::endl;
+	std::cout << (result2->method == "all") << std::endl;
+	std::cout << (result1->variable == "[\"a\"][\"b\"]") << std::endl;
 }

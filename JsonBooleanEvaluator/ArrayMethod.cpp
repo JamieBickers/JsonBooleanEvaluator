@@ -7,13 +7,12 @@
 
 #include <string>
 
-using namespace std;
 using json = nlohmann::json;
 
-bool any(string arrayVariable, json variables, shared_ptr<BooleanTree> condition, string lambdaVariable)
+bool any(std::string arrayVariable, json variables, std::shared_ptr<BooleanTree> condition, std::string lambdaVariable)
 {
-	map<string, double> additionalVariables;
-	auto evaluatedArray = evaluateVariable<vector<double>>(variables, arrayVariable);
+	std::map<std::string, double> additionalVariables;
+	auto evaluatedArray = evaluateVariable<std::vector<double>>(variables, arrayVariable);
 	for (size_t i = 0; i < evaluatedArray.size(); i++)
 	{
 		additionalVariables[lambdaVariable] = evaluatedArray[i];
@@ -25,10 +24,10 @@ bool any(string arrayVariable, json variables, shared_ptr<BooleanTree> condition
 	return false;
 }
 
-bool all(string arrayVariable, json variables, shared_ptr<BooleanTree> condition, string lambdaVariable)
+bool all(std::string arrayVariable, json variables, std::shared_ptr<BooleanTree> condition, std::string lambdaVariable)
 {
-	map<string, double> additionalVariables;
-	auto evaluatedArray = evaluateVariable<vector<double>>(variables, arrayVariable);
+	std::map<std::string, double> additionalVariables;
+	auto evaluatedArray = evaluateVariable<std::vector<double>>(variables, arrayVariable);
 	for (size_t i = 0; i < evaluatedArray.size(); i++)
 	{
 		additionalVariables[lambdaVariable] = evaluatedArray[i];
@@ -40,10 +39,10 @@ bool all(string arrayVariable, json variables, shared_ptr<BooleanTree> condition
 	return true;
 }
 
-int count(string arrayVariable, json variables, shared_ptr<BooleanTree> condition, string lambdaVariable)
+int count(std::string arrayVariable, json variables, std::shared_ptr<BooleanTree> condition, std::string lambdaVariable)
 {
-	map<string, double> additionalVariables;
-	auto evaluatedArray = evaluateVariable<vector<double>>(variables, arrayVariable);
+	std::map<std::string, double> additionalVariables;
+	auto evaluatedArray = evaluateVariable<std::vector<double>>(variables, arrayVariable);
 	int countSoFar = 0;
 	for (size_t i = 0; i < evaluatedArray.size(); i++)
 	{

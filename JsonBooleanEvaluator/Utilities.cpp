@@ -4,9 +4,7 @@
 #include <string>
 #include <regex>
 
-using namespace std;
-
-int indexOfClosingBracket(string expression, int position)
+int indexOfClosingBracket(std::string expression, int position)
 {
 	if (expression[position] != '(') {
 		throw "Not given brackets.";
@@ -25,7 +23,7 @@ int indexOfClosingBracket(string expression, int position)
 	return currentPosition - 1;
 }
 
-string getTermsBetweenBracketsIncludingBrackets(string expression, int position)
+std::string getTermsBetweenBracketsIncludingBrackets(std::string expression, int position)
 {
 	if (expression[position] != '(') {
 		throw "Not given brackets.";
@@ -34,12 +32,12 @@ string getTermsBetweenBracketsIncludingBrackets(string expression, int position)
 	return expression.substr(position, closingIndex + 1);
 }
 
-bool stringContainsCharacter(string expression, char character, int startingPosition)
+bool stringContainsCharacter(std::string expression, char character, int startingPosition)
 {
-	return expression.find(character, startingPosition) != string::npos;
+	return expression.find(character, startingPosition) != std::string::npos;
 }
 
-int indexOfFirstChar(string expression, char character, int position)
+int indexOfFirstChar(std::string expression, char character, int position)
 {
 	for (size_t i = 0; i < expression.size(); i++)
 	{
@@ -50,17 +48,17 @@ int indexOfFirstChar(string expression, char character, int position)
 	throw "Character is not in string.";
 }
 
-bool isNumeric(string possibleNumber)
+bool isNumeric(std::string possibleNumber)
 {
 	if (possibleNumber == "") {
 		return false;
 	}
 	else {
-		regex numericalRegex("-?[0-9]*\\.?[0-9]*");
+		std::regex numericalRegex("-?[0-9]*\\.?[0-9]*");
 		return regex_match(possibleNumber, numericalRegex);
 	}
 }
-int indexOfNextOpeningBracket(string expression, int position)
+int indexOfNextOpeningBracket(std::string expression, int position)
 {
 	for (size_t i = position; i < expression.size(); i++)
 	{
