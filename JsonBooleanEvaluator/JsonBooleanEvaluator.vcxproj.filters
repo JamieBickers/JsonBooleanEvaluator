@@ -51,6 +51,9 @@
     <ClInclude Include="parseArrayMethod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JsonBooleanEvaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -63,9 +66,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BooleanTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BooleanExpressionParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VariableEvaluator.cpp">
@@ -84,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="parseArrayMethod.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BooleanExpressionParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

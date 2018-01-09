@@ -29,7 +29,7 @@ std::string getTermsBetweenBracketsIncludingBrackets(std::string expression, int
 		throw "Not given brackets.";
 	}
 	int closingIndex = indexOfClosingBracket(expression, position);
-	return expression.substr(position, closingIndex + 1);
+	return expression.substr(position, closingIndex + 1 - position);
 }
 
 bool stringContainsCharacter(std::string expression, char character, int startingPosition)

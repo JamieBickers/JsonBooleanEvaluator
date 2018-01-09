@@ -38,7 +38,8 @@ std::shared_ptr<BooleanTree> parseBooleansExpressionToTree(std::string expressio
 	std::string firstBooleanExpression = getNextBooleanExpression(expression, 0);
 
 	if (expression.size() == firstBooleanExpression.size()) {
-		if ((expression[0] == '(') && (expression[expression.size() - 1] == ')')) {;
+		if ((expression[0] == '(') && (expression[expression.size() - 1] == ')')) {
+			;
 			return parseBooleansExpressionToTree(expression.substr(1, expression.size() - 2));
 		}
 		setCondition(tree, expression);
@@ -48,9 +49,9 @@ std::shared_ptr<BooleanTree> parseBooleansExpressionToTree(std::string expressio
 	char parsedOperator = parseBooleanOperator(firstBooleanOperator);
 
 	tree->setBooleanOperator(parsedOperator);
-	
+
 	tree->setLeftChild(parseBooleansExpressionToTree(firstBooleanExpression));
-	
+
 	std::string restOfExpression = expression.substr(firstBooleanExpression.size() + firstBooleanOperator.size());
 	tree->setRightChild(parseBooleansExpressionToTree(restOfExpression));
 	return tree;
@@ -187,7 +188,7 @@ std::string getNextBooleanOperator(std::string expression, int position)
 	if (!stringContainsCharacter(booleanCharacters, expression[position])) {
 		throw "Not given a boolean character.";
 	}
-	
+
 	std::string nextOperator;
 	unsigned currentPosition = position;
 	while ((expression[currentPosition] == expression[position]) && (currentPosition < expression.size()))
@@ -201,71 +202,4 @@ std::string getNextBooleanOperator(std::string expression, int position)
 char parseBooleanOperator(std::string booleanOperator)
 {
 	return booleanOperator[0];
-}
-
-
-
-void runBooleanExpressionParserTests() {
-
-	std::cout << "Running BooleanExpressionParser tests." << std::endl;
-
-	json variables;
-
-	std::string booleanExpression1 = "4y4y4yui&&(ewrejwid||false)";
-	std::string result1 = getNextBooleanExpression(booleanExpression1, 0);
-	std::cout << (result1 == "4y4y4yui") << std::endl;
-
-	booleanExpression1 = "4y4y4yui&&(ewrejwid||false)";
-	result1 = getNextBooleanExpression(booleanExpression1, 10);
-	std::cout << (result1 == "(ewrejwid||false)") << std::endl;
-
-	std::string booleanExpression2 = "true";
-	auto tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	bool result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == true) << std::endl;
-
-	booleanExpression2 = "false";
-	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == false) << std::endl;
-
-	booleanExpression2 = "(false)";
-	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == false) << std::endl;
-
-	booleanExpression2 = "!true";
-	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == false) << std::endl;
-
-	booleanExpression2 = "!(false)";
-	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == true) << std::endl;
-
-	booleanExpression2 = "true || false";
-	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == true) << std::endl;
-
-	booleanExpression2 = "true & false";
-	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == false) << std::endl;
-
-	booleanExpression2 = "(true || false) && !(true)";
-	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == false) << std::endl;
-
-	booleanExpression2 = "(true || false) && !true";
-	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == false) << std::endl;
-
-	booleanExpression2 = "((true) || (true || (false))) && (!(((true) || (false)) && (true)))";
-	tree2 = parseBooleansExpressionToTree(booleanExpression2);
-	result2 = tree2->evaluateNode(variables);
-	std::cout << (result2 == false) << std::endl;
 }

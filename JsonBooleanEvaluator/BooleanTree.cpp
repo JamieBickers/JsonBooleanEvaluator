@@ -186,23 +186,3 @@ bool evaluateCondition(std::string condition, json jsonObject, std::map<std::str
 		return evaluateVariable<bool>(jsonObject, condition, additionalVariables);
 	}
 }
-
-void runBooleanTreeTests()
-{
-	std::cout << "Running BooleanTree tests." << std::endl;
-
-	json variables;
-
-	auto initialNode = std::make_shared<BooleanTree>();
-	initialNode->setBooleanCondition("true");
-	bool result = initialNode->evaluateNode(variables);
-	std::cout << (result == true) << std::endl;
-
-	initialNode->setBooleanCondition("false");
-	result = initialNode->evaluateNode(variables);
-	std::cout << (result == false) << std::endl;
-
-	initialNode->setBooleanCondition("false");
-	result = initialNode->evaluateNode(variables);
-	std::cout << (result == false) << std::endl;
-}
