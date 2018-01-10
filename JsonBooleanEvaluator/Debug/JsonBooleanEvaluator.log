@@ -1,15 +1,3 @@
-﻿  EvaluateArithmeticExpressions.cpp
+﻿  JsonBooleanEvaluator.cpp
 c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(48): warning C4244: 'argument': conversion from 'double' to 'nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer>::size_type', possible loss of data
-  BooleanTree.cpp
-c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(48): warning C4244: 'argument': conversion from 'double' to 'nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer>::size_type', possible loss of data
-c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(25): warning C4244: 'argument': conversion from 'double' to 'nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer>::size_type', possible loss of data
-  c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\booleantree.cpp(186): note: see reference to function template instantiation 'T evaluateVariable<bool>(nlohmann::json,std::string,std::map<std::string,double,std::less<StringType>,std::allocator<std::pair<const _Kty,_Ty>>>)' being compiled
-          with
-          [
-              T=bool,
-              StringType=std::string,
-              _Kty=std::string,
-              _Ty=double
-          ]
-  Generating Code...
   JsonBooleanEvaluator.vcxproj -> C:\Users\Jamie\Desktop\JsonBooleanEvaluator\Debug\JsonBooleanEvaluator.lib

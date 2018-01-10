@@ -1,3 +1,20 @@
-﻿  BooleanExpressionParserTests.cpp
+﻿  VariableEvaluatorTests.cpp
+c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(48): warning C4244: 'argument': conversion from 'double' to 'nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer>::size_type', possible loss of data
+c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(25): warning C4244: 'argument': conversion from 'double' to 'nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer>::size_type', possible loss of data
+  c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluator\variableevaluator.h(13): note: see reference to function template instantiation 'T evaluateVariable<T>(nlohmann::json,std::string,std::map<std::string,double,std::less<StringType>,std::allocator<std::pair<const _Kty,_Ty>>>)' being compiled
+          with
+          [
+              T=int,
+              StringType=std::string,
+              _Kty=std::string,
+              _Ty=double
+          ]
+  c:\users\jamie\desktop\jsonbooleanevaluator\jsonbooleanevaluatortests\variableevaluatortests.cpp(19): note: see reference to function template instantiation 'T evaluateVariable<int>(nlohmann::json,std::string)' being compiled
+          with
+          [
+              T=int
+          ]
+  parseArrayMethodTests.cpp
+  Generating Code...
      Creating library C:\Users\Jamie\Desktop\JsonBooleanEvaluator\Debug\JsonBooleanEvaluatorTests.lib and object C:\Users\Jamie\Desktop\JsonBooleanEvaluator\Debug\JsonBooleanEvaluatorTests.exp
   JsonBooleanEvaluatorTests.vcxproj -> C:\Users\Jamie\Desktop\JsonBooleanEvaluator\Debug\JsonBooleanEvaluatorTests.dll

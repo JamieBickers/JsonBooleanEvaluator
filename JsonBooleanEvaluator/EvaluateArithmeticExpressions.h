@@ -5,4 +5,3 @@
 #include "ArithmeticTree.h"
 
 std::shared_ptr<ArithmeticTree> parseArithmeticExpressionToTree(std::string expression);
-void runArithmeticEvaluationTests();

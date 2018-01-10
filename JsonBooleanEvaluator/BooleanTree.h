@@ -34,5 +34,3 @@ private:
 	std::shared_ptr<BooleanTree> leftChild;
 	std::shared_ptr<BooleanTree> rightChild;
 };
-
-void runBooleanTreeTests();

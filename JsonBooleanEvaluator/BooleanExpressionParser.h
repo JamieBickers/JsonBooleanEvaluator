@@ -4,4 +4,3 @@
 #include <memory>
 
 std::shared_ptr<BooleanTree> parseBooleansExpressionToTree(std::string expression);
-void runBooleanExpressionParserTests();
