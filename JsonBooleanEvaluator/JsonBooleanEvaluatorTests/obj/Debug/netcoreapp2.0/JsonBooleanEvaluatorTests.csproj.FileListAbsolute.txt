@@ -1,0 +1,17 @@
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.deps.json
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.runtimeconfig.json
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.runtimeconfig.dev.json
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.dll
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.pdb
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\JsonBooleanEvaluator.dll
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\bin\Debug\netcoreapp2.0\JsonBooleanEvaluator.pdb
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\obj\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.csprojResolveAssemblyReference.cache
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\obj\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.csproj.CoreCompileInputs.cache
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\obj\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.AssemblyInfoInputs.cache
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\obj\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.AssemblyInfo.cs
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\obj\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.csproj.CopyComplete
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\obj\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.dll
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluatorTests\obj\Debug\netcoreapp2.0\JsonBooleanEvaluatorTests.pdb

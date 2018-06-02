@@ -1,0 +1,55 @@
+Curely braces hold a segment, they do not form part of the syntax.
+
+
+
+boolean expression = "atom" || "arithmetic boolean" || "array"."boolean array method" || "atom" == "atom" || "boolean operator" "boolean expression" || ( "boolean expression" )
+
+arithmetic expression = "atom" || "arithmetic expression" "arithmetic operator" "arithmetic expression" || "array"."arithmetic array method" || ( "arithmetic expression" )
+
+atom = "json variable" || "constant" || "atom" [ atom ]
+
+constant = "boolean constant" || "array constant" || "integer constant" || "string constant"
+
+arithmetic boolean = "arithmetic expression" "arithmetic comparison operator" "arithmetic expression"
+
+
+
+json variable = [ "string constant" ] "json variable"?
+
+
+
+
+
+
+
+
+array = "json variable" || "array constant"
+
+arithmetic array method = "arithmetic array method name" ( "method variable" => "arithmetic expression" )
+
+boolean array method = boolean array method name" ( "method variable" => "boolean expression" )
+
+arithmetic array method name = count
+
+boolean array method = any || all
+
+
+arithmetic operator = + || - || * || /
+
+boolean operator = ! || && || ||
+
+arithmetic comparison operator == || < || > || <= || >=
+
+
+
+boolean constant = true || false
+
+array constant = [ "constant array internal" ]
+
+constant array internal = "constant" { , "constant array internal" }?
+
+string constant = " any sequence of characters with quotes escaped "
+
+integer constant = any sequence of numeric characters
+
+method variable = any sequence of alpabetic or numeric characters

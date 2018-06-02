@@ -1,0 +1,36 @@
+/* Symbols */
+(
+)
++
+-
+*
+/
+<
+>
+<=
+>=
+==
+&&
+||
+!
+[
+]
+,
+.
+=>
+
+/* keywords */
+true
+false
+count
+any
+all
+
+/* identifiers */
+"any identifier other than a keyword"
+
+
+/* Constants */
+"string constant"
+"integer constant"
+

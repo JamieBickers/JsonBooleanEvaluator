@@ -1,0 +1,9 @@
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluator\bin\Debug\netcoreapp2.0\JsonBooleanEvaluator.deps.json
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluator\bin\Debug\netcoreapp2.0\JsonBooleanEvaluator.dll
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluator\bin\Debug\netcoreapp2.0\JsonBooleanEvaluator.pdb
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluator\obj\Debug\netcoreapp2.0\JsonBooleanEvaluator.csprojResolveAssemblyReference.cache
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluator\obj\Debug\netcoreapp2.0\JsonBooleanEvaluator.csproj.CoreCompileInputs.cache
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluator\obj\Debug\netcoreapp2.0\JsonBooleanEvaluator.AssemblyInfoInputs.cache
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluator\obj\Debug\netcoreapp2.0\JsonBooleanEvaluator.AssemblyInfo.cs
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluator\obj\Debug\netcoreapp2.0\JsonBooleanEvaluator.dll
+C:\Users\bicke\OneDrive\Desktop\JsonBooleanEvaluator\JsonBooleanEvaluator\JsonBooleanEvaluator\obj\Debug\netcoreapp2.0\JsonBooleanEvaluator.pdb
